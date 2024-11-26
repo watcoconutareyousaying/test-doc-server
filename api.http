@@ -1,35 +1,37 @@
+### LOGIN 
+
 POST http://localhost:8000/api/token/
 Content-Type: application/json
 
 {
     "username": "admin",
-    "password": "admin"
+    "password": "ios"
 }
 
 
-###
+### PROJECT LIST
 
 GET http://localhost:8000/api/project/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI1NzA2LCJpYXQiOjE3MzI2MjU0MDYsImp0aSI6ImI5YmViZTc2ZjFjNTQ4ZjFiMzZjNDRhNzM2MDllNjk5IiwidXNlcl9pZCI6MX0.nEP8un5AAEAP8yrnf8-tGdYSwFgHRDsd03lPqLZY2OM
 
-###
+### CREATE PROJECT
 
 POST http://localhost:8000/api/project/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjIzNTQ5LCJpYXQiOjE3MzI2MjMyNDksImp0aSI6ImY3ZWIyYWYyNmI4OTQxNGQ5NzAyOWVmMTg5MGZkOTk2IiwidXNlcl9pZCI6MX0.Jv1DNJc_YFxy-Wt95qf35gC4lyRDVLBf3SYdvLXsvJU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ1ODE1LCJpYXQiOjE3MzI2NDU1MTUsImp0aSI6IjA3NTk2YmUyYTA0NTRmYzA5MWU4NTY3N2RmOWQ4ZjRhIiwidXNlcl9pZCI6MX0.aOqhnbW96flkkIvL_xZJ81Xt56PXIjC8PZknq3695Q4
 
 {
-    "name": "Oneplus"
+    "name": "Mac-Book"
 }
 
-###
+### PROJECT DETAIL
 
 GET http://localhost:8000/api/project-detail/3/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI1NzA2LCJpYXQiOjE3MzI2MjU0MDYsImp0aSI6ImI5YmViZTc2ZjFjNTQ4ZjFiMzZjNDRhNzM2MDllNjk5IiwidXNlcl9pZCI6MX0.nEP8un5AAEAP8yrnf8-tGdYSwFgHRDsd03lPqLZY2OM
 
-###
+### UPDATE PROJECT DETAIL
 
 PUT http://localhost:8000/api/project-detail/2/
 Content-Type: application/json
@@ -39,20 +41,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
     "name": "New Document"
 }
 
-###
+### TESTPLAN LIST
 
 GET http://localhost:8000/api/testplan/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI3MjE0LCJpYXQiOjE3MzI2MjY5MTQsImp0aSI6IjBhYjJlOTIzYjJkMzQzMzNiZTEzZDQ1ZTYyMjYwYzY0IiwidXNlcl9pZCI6MX0.qNiB03dReCNUcHB5HDClTfGCi-WnAUO2FtWVdBgv688
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjM4NjE1LCJpYXQiOjE3MzI2MzgzMTUsImp0aSI6ImE2OGQyMDA3OTc5YzQ0YzBiYmJkMGFlZmQxODZhMzYxIiwidXNlcl9pZCI6MX0.YX2JuyAM0ASSmGamKFjkL5_tr_jHbfYl33D5aeS081k
 
-###
+### CREATE TESTPLAN
 
 POST http://localhost:8000/api/testplan/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI2NzEwLCJpYXQiOjE3MzI2MjY0MTAsImp0aSI6IjQxNmE2ZGM4OTZlMTQ3ZTZiM2MyZDE2ZGJjM2UzOGE0IiwidXNlcl9pZCI6MX0.tDyK8jyti0RW8PKXRTjFOEVOXXW6xLWwFNMN1iuCZ2o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ1ODE1LCJpYXQiOjE3MzI2NDU1MTUsImp0aSI6IjA3NTk2YmUyYTA0NTRmYzA5MWU4NTY3N2RmOWQ4ZjRhIiwidXNlcl9pZCI6MX0.aOqhnbW96flkkIvL_xZJ81Xt56PXIjC8PZknq3695Q4
 
 {
-  "project_id": 1,
+  "project": 1,
   "objective": "To ensure quality for the new product launch",
   "scope_in": "Functional testing, Performance testing",
   "scope_out": "Security testing, Usability testing",
@@ -79,8 +81,131 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
   "sign_off_authorities": "manager, director"
 }
 
-###
+### TESTPLAN DETAIL
 
 GET http://localhost:8000/api/testplan_detail/1/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI3MDYwLCJpYXQiOjE3MzI2MjY3NjAsImp0aSI6IjEyN2NjYjk2Y2JlMTRkYWZiMDFmYjRmYjRmMzA5NWYxIiwidXNlcl9pZCI6MX0.kSlltM2HGf-ZauYynpWmn0OOYy9uB_8W33daR4cTaFM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjMxMTc0LCJpYXQiOjE3MzI2MzA4NzQsImp0aSI6IjdjYjE1ZjZkZjU1YzRjYTY5MGRjNzU3MWQ0Y2FlNjlhIiwidXNlcl9pZCI6MX0.Xq_NEKaRYS6UKxSMCs8ztthBfiTRn_y1Ix9yQ9qFums
+
+### UPDATE TESTPLAN DETAIL
+
+PUT http://localhost:8000/api/testplan_detail/1/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjMxMTc0LCJpYXQiOjE3MzI2MzA4NzQsImp0aSI6IjdjYjE1ZjZkZjU1YzRjYTY5MGRjNzU3MWQ0Y2FlNjlhIiwidXNlcl9pZCI6MX0.Xq_NEKaRYS6UKxSMCs8ztthBfiTRn_y1Ix9yQ9qFums
+
+{
+  "project": 1,
+  "objective": "To ensure quality and precision for the new MacBook manufacturing process.",
+  "scope_in": "Assembly line testing, Battery performance testing, Display calibration",
+  "scope_out": "Software testing, Third-party component certification",
+  "test_levels": "Unit testing, System testing",
+  "types_of_testing": "Manual inspection, Automated process testing",
+  "environment_details": "Controlled manufacturing facility with calibrated equipment",
+  "test_data": "Prototype models and predefined test scenarios",
+  "test_manager": "production_manager",
+  "test_leads": "lead_engineer1, lead_engineer2",
+  "testers": "technician1, technician2",
+  "developers": "hardware_dev1, hardware_dev2",
+  "business_analysts": "product_analyst1, product_analyst2",
+  "milestones": "Phase 1: Component verification, Phase 2: Assembly testing, Phase 3: Final QA",
+  "deadlines": "2025-01-15",
+  "dependencies": "Availability of components, Calibration of testing equipment",
+  "deliverables": "Inspection reports, Test logs, Quality certifications",
+  "entry_criteria": "Components procured, Assembly line set up",
+  "exit_criteria": "All units meet quality benchmarks, Critical defects resolved",
+  "risks": "Supply chain delays, Equipment malfunction",
+  "mitigation_strategies": "Multiple suppliers, Backup equipment maintenance",
+  "defect_management": "Using custom ERP system for defect tracking",
+  "communication_plan": "Daily shift briefings, Weekly production updates",
+  "approval_process": "Quality assurance sign-off from production and QA leads",
+  "sign_off_authorities": "production_manager, QA_head"
+}
+
+### TESTCASE LIST
+
+GET http://localhost:8000/api/testcase/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjM4NjE1LCJpYXQiOjE3MzI2MzgzMTUsImp0aSI6ImE2OGQyMDA3OTc5YzQ0YzBiYmJkMGFlZmQxODZhMzYxIiwidXNlcl9pZCI6MX0.YX2JuyAM0ASSmGamKFjkL5_tr_jHbfYl33D5aeS081k
+
+### CREATE TESTCASE
+
+POST http://localhost:8000/api/testcase/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ2ODk1LCJpYXQiOjE3MzI2NDY1OTUsImp0aSI6IjNhMDIwM2Y2M2Q2YjQyZjM5M2FhZjdlMmIzYmE5Y2JjIiwidXNlcl9pZCI6MX0.AIGiGxu6QQA02oPIOW2CN6B1P6JCwrPmbyrj_FtutW8
+
+{
+  "project": 1,
+  "description": "Test the assembly and functionality of the MacBook to ensure proper assembly and performance of all components.",
+  "preconditions": "All MacBook components (display, keyboard, motherboard, battery, trackpad, etc.) must be available and in working condition.",
+  "test_steps": "1. Verify all MacBook parts are correctly assembled. 2. Power on the MacBook. 3. Test the functionality of the keyboard, trackpad, display, and ports. 4. Check for any visible defects or malfunctions.",
+  "expected_result": "The MacBook should power on, with all components functioning correctly and no visible defects.",
+  "actual_result": "MacBook powered on successfully, all components (keyboard, trackpad, display, ports) are working as expected with no defects.",
+  "status": "Pass"
+}
+
+### TESTCASE DETAIL
+
+GET http://localhost:8000/api/testcase_detail/1/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQxMDcxLCJpYXQiOjE3MzI2NDA3NzEsImp0aSI6ImExZDk5OThkM2I5NjQ5MDY4NWNiNmExNDliZWI2ODQ5IiwidXNlcl9pZCI6MX0.7hjvNBog22EUCutIh6El0Q3Ntsj0RUsLHL3tZsiNvQg
+
+
+### UPDATE TESTCASE DETAIL
+
+PUT http://localhost:8000/api/testcase_detail/1/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQxMDcxLCJpYXQiOjE3MzI2NDA3NzEsImp0aSI6ImExZDk5OThkM2I5NjQ5MDY4NWNiNmExNDliZWI2ODQ5IiwidXNlcl9pZCI6MX0.7hjvNBog22EUCutIh6El0Q3Ntsj0RUsLHL3tZsiNvQg
+
+{
+  "project": 1,
+  "description": "Test the assembly and functionality of the MacBook to ensure proper assembly and performance of all components.",
+  "preconditions": "All MacBook components (display, keyboard, motherboard, battery, trackpad, etc.) must be available and in working condition.",
+  "test_steps": "1. Verify all MacBook parts are correctly assembled. 2. Power on the MacBook. 3. Test the functionality of the keyboard, trackpad, display, and ports. 4. Check for any visible defects or malfunctions.",
+  "expected_result": "The MacBook should power on, with all components functioning correctly and no visible defects.",
+  "actual_result": "MacBook powered on successfully, all components (keyboard, trackpad, display, ports) are working as expected with no defects.",
+  "status": "Fail"
+}
+
+### TEST COVERAGE LIST
+
+GET http://localhost:8000/api/testcoverage/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ2ODk1LCJpYXQiOjE3MzI2NDY1OTUsImp0aSI6IjNhMDIwM2Y2M2Q2YjQyZjM5M2FhZjdlMmIzYmE5Y2JjIiwidXNlcl9pZCI6MX0.AIGiGxu6QQA02oPIOW2CN6B1P6JCwrPmbyrj_FtutW8
+
+
+### BUG REPORT LIST
+
+GET http://localhost:8000/api/bugreport/
+Content-Type: application/json
+Authorization: Bearer 
+
+
+### CREATE BUG REPORT 
+
+POST http://localhost:8000/api/bugreport/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ5NDk4LCJpYXQiOjE3MzI2NDkxOTgsImp0aSI6ImNiNmRhYmNiYmRjMjQxMzJhYTIwMzlkMzc2YmFhZDcxIiwidXNlcl9pZCI6MX0.1WvODw6beU1AI1LL5UdvT-o-zp2VtOtsXSFZ6Oy5M94
+
+{
+  "project": 1,
+  "summary": "Defective screen detected during assembly.",
+  "steps_to_reproduce": "1. Begin assembly process. 2. Attach screen to chassis. 3. Conduct quality check. 4. Notice unresponsive pixels on the screen.",
+  "severity": "High",
+  "status": "Open"
+}
+
+### TEST REPORT
+
+GET http://localhost:8000/api/testreport/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjUyMjU1LCJpYXQiOjE3MzI2NTE5NTUsImp0aSI6ImE0M2Y0NGRmNTA4ZDQzNjQ4ZWI3NjI3ZjJkNjBmMDRmIiwidXNlcl9pZCI6MX0.bBePkjYlRXPV9-1_HCimlVaoz0DKsbSlOSUCe1sJquU
+
+### CREATE TEST REPORT
+
+POST http://localhost:8000/api/testreport/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjUyMjU1LCJpYXQiOjE3MzI2NTE5NTUsImp0aSI6ImE0M2Y0NGRmNTA4ZDQzNjQ4ZWI3NjI3ZjJkNjBmMDRmIiwidXNlcl9pZCI6MX0.bBePkjYlRXPV9-1_HCimlVaoz0DKsbSlOSUCe1sJquU
+
+{
+  "project": 1
+}

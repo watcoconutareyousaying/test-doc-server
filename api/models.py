@@ -13,14 +13,14 @@ class Project(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'project'
+        db_table = "project"
 
     def __str__(self):
         return self.name
 
 
 class TestPlan(models.Model):
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     objective = models.TextField()
     scope_in = models.TextField()
     scope_out = models.TextField()
@@ -49,7 +49,136 @@ class TestPlan(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'testplan'
+        db_table = "testplan"
 
     def __str__(self) -> str:
-        return self.project_id.name
+        return self.project.name
+
+
+class TestCase(models.Model):
+    class StatusChoices(models.TextChoices):
+        PASS = "Pass"
+        FAIL = "Fail"
+        PENDING = "Pending"
+
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="test_cases"
+    )
+    testcaseID = models.CharField(max_length=10, unique=True)
+    description = models.TextField()
+    preconditions = models.TextField(blank=True)
+    test_steps = models.TextField()
+    expected_result = models.TextField()
+    actual_result = models.TextField(blank=True, null=True)
+    status = models.CharField(
+        max_length=10, choices=StatusChoices, default=StatusChoices.PENDING
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "testcase"
+
+    def save(self, *args, **kwargs):
+        if not self.testcaseID:
+            last_testcase = TestCase.objects.order_by("-id").first()
+            last_id = (
+                int(last_testcase.testcaseID.split("_")[1]) if last_testcase else 0
+            )
+            next_id = last_id + 1
+            self.testcaseID = f"TC_{next_id:04d}"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Test case {self.testcaseID} for Project {self.project.name}"
+
+
+class TestCoverage(models.Model):
+    class StatusChoices(models.TextChoices):
+        COVERED = "Covered"
+        NOT_COVERED = "Not Covered"
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    feature_id = models.CharField(max_length=20, unique=True)
+    feature_description = models.TextField()
+    test_cases = models.ManyToManyField("TestCase", related_name="test_coverages")
+    status = models.CharField(
+        max_length=20, choices=StatusChoices, default=StatusChoices.NOT_COVERED
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "testcoverage"
+
+    def __str__(self):
+        return f"Feature {self.feature_id} - {self.status}"
+
+    def update_status(self):
+        if all(test_case.status == "Pass" for test_case in self.test_cases.all()):
+            self.status = "Covered"
+        else:
+            self.status = "Not Covered"
+        self.save()
+
+
+class BugReport(models.Model):
+    class StatusChoices(models.TextChoices):
+        OPEN = "Open"
+        CLOSED = "Closed"
+        INPROGRESS = "In Progress"
+        FIXED = "Fixed"
+
+    class SeverityChoices(models.TextChoices):
+        LOW = "Low"
+        MEDIUM = "Medium"
+        HIGH = "High"
+        CRITICAL = "Critical"
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    bug_id = models.CharField(max_length=10, unique=True)
+    summary = models.TextField()
+    steps_to_reproduce = models.TextField()
+    severity = models.CharField(max_length=10, choices=SeverityChoices)
+    status = models.CharField(
+        max_length=15, choices=StatusChoices, default=StatusChoices.OPEN
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.bug_id:
+            last_bug = BugReport.objects.all().order_by("id").last()
+            if last_bug:
+                last_id = int(last_bug.bug_id[3:])
+                new_id = f"BUG{last_id + 1:04d}"
+            else:
+                new_id = "BUG0001"
+            self.bug_id = new_id
+        super().save(*args, **kwargs)
+
+    class Meta:
+        db_table = "bugreport"
+
+    def __str__(self):
+        return f"{self.bug_id} - {self.project.name}"
+
+
+class TestReport(models.Model):
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="test_reports"
+    )
+    total_test_cases = models.IntegerField()
+    passed_test_cases = models.IntegerField()
+    failed_test_cases = models.IntegerField()
+    bugs_summary = models.JSONField()
+    observations = models.TextField()
+    recommendations = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "testreport"
+
+    def __str__(self):
+        return f"Test Report for Project {self.project.name}"

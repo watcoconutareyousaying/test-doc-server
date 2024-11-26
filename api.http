@@ -1,0 +1,86 @@
+POST http://localhost:8000/api/token/
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+
+###
+
+GET http://localhost:8000/api/project/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI1NzA2LCJpYXQiOjE3MzI2MjU0MDYsImp0aSI6ImI5YmViZTc2ZjFjNTQ4ZjFiMzZjNDRhNzM2MDllNjk5IiwidXNlcl9pZCI6MX0.nEP8un5AAEAP8yrnf8-tGdYSwFgHRDsd03lPqLZY2OM
+
+###
+
+POST http://localhost:8000/api/project/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjIzNTQ5LCJpYXQiOjE3MzI2MjMyNDksImp0aSI6ImY3ZWIyYWYyNmI4OTQxNGQ5NzAyOWVmMTg5MGZkOTk2IiwidXNlcl9pZCI6MX0.Jv1DNJc_YFxy-Wt95qf35gC4lyRDVLBf3SYdvLXsvJU
+
+{
+    "name": "Oneplus"
+}
+
+###
+
+GET http://localhost:8000/api/project-detail/3/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI1NzA2LCJpYXQiOjE3MzI2MjU0MDYsImp0aSI6ImI5YmViZTc2ZjFjNTQ4ZjFiMzZjNDRhNzM2MDllNjk5IiwidXNlcl9pZCI6MX0.nEP8un5AAEAP8yrnf8-tGdYSwFgHRDsd03lPqLZY2OM
+
+###
+
+PUT http://localhost:8000/api/project-detail/2/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI1NzA2LCJpYXQiOjE3MzI2MjU0MDYsImp0aSI6ImI5YmViZTc2ZjFjNTQ4ZjFiMzZjNDRhNzM2MDllNjk5IiwidXNlcl9pZCI6MX0.nEP8un5AAEAP8yrnf8-tGdYSwFgHRDsd03lPqLZY2OM
+
+{
+    "name": "New Document"
+}
+
+###
+
+GET http://localhost:8000/api/testplan/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI3MjE0LCJpYXQiOjE3MzI2MjY5MTQsImp0aSI6IjBhYjJlOTIzYjJkMzQzMzNiZTEzZDQ1ZTYyMjYwYzY0IiwidXNlcl9pZCI6MX0.qNiB03dReCNUcHB5HDClTfGCi-WnAUO2FtWVdBgv688
+
+###
+
+POST http://localhost:8000/api/testplan/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI2NzEwLCJpYXQiOjE3MzI2MjY0MTAsImp0aSI6IjQxNmE2ZGM4OTZlMTQ3ZTZiM2MyZDE2ZGJjM2UzOGE0IiwidXNlcl9pZCI6MX0.tDyK8jyti0RW8PKXRTjFOEVOXXW6xLWwFNMN1iuCZ2o
+
+{
+  "project_id": 1,
+  "objective": "To ensure quality for the new product launch",
+  "scope_in": "Functional testing, Performance testing",
+  "scope_out": "Security testing, Usability testing",
+  "test_levels": "Unit testing, Integration testing",
+  "types_of_testing": "Manual testing, Automated testing",
+  "environment_details": "Staging environment with replica data",
+  "test_data": "Sample test data for edge cases",
+  "test_manager": "manager",
+  "test_leads": "lead1, lead2",
+  "testers": "tester1, tester2",
+  "developers": "dev1, dev2",
+  "business_analysts": "ba1, ba2",
+  "milestones": "Phase 1: Planning, Phase 2: Execution",
+  "deadlines": "2024-12-01",
+  "dependencies": "Final API readiness, Database migration",
+  "deliverables": "Test reports, Defect logs",
+  "entry_criteria": "All modules developed, Test data available",
+  "exit_criteria": "All test cases executed, Critical defects resolved",
+  "risks": "Unavailability of testing tools, Resource constraints",
+  "mitigation_strategies": "Backup tools, Additional hires",
+  "defect_management": "Using Jira for defect tracking",
+  "communication_plan": "Weekly meetings, Daily standups",
+  "approval_process": "Sign-off from project stakeholders",
+  "sign_off_authorities": "manager, director"
+}
+
+###
+
+GET http://localhost:8000/api/testplan_detail/1/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjI3MDYwLCJpYXQiOjE3MzI2MjY3NjAsImp0aSI6IjEyN2NjYjk2Y2JlMTRkYWZiMDFmYjRmYjRmMzA5NWYxIiwidXNlcl9pZCI6MX0.kSlltM2HGf-ZauYynpWmn0OOYy9uB_8W33daR4cTaFM

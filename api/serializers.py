@@ -175,6 +175,7 @@ class TestReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestReport
         fields = (
+            "id",
             "project",
             "total_test_cases",
             "passed_test_cases",

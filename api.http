@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
     "username": "admin",
-    "password": "admin"
+    "password": "ios"
 }
 
 
@@ -51,10 +51,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 POST http://localhost:8000/api/testplan/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjg5OTA0LCJpYXQiOjE3MzI2ODYzMDQsImp0aSI6IjIwMzc1ZjNiMzgyODRmNWFhZTAwYTg5MmY2ZjZkNjA4IiwidXNlcl9pZCI6MX0.if7YeV9Plrd8Yd7EZjzLjItL4ZQXMbbW3HlZ_I3VIrg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMwNTEzLCJpYXQiOjE3MzI3MjY5MTMsImp0aSI6Ijk3MGRhMDBhMzA2MTQ2YTM5YmM1ZmU2ZGNlYmE1ODQyIiwidXNlcl9pZCI6MX0.LrcsldoMJvEjjombiK_0o6uCVXDkoZbtRJa6ssSnkHU
 
 {
-  "project": 4,
+  "project": 1,
   "objective": "To ensure quality for the new product launch",
   "scope_in": "Functional testing, Performance testing",
   "scope_out": "Security testing, Usability testing",
@@ -131,10 +131,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 POST http://localhost:8000/api/testcase/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjg5OTA0LCJpYXQiOjE3MzI2ODYzMDQsImp0aSI6IjIwMzc1ZjNiMzgyODRmNWFhZTAwYTg5MmY2ZjZkNjA4IiwidXNlcl9pZCI6MX0.if7YeV9Plrd8Yd7EZjzLjItL4ZQXMbbW3HlZ_I3VIrg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMwNTEzLCJpYXQiOjE3MzI3MjY5MTMsImp0aSI6Ijk3MGRhMDBhMzA2MTQ2YTM5YmM1ZmU2ZGNlYmE1ODQyIiwidXNlcl9pZCI6MX0.LrcsldoMJvEjjombiK_0o6uCVXDkoZbtRJa6ssSnkHU
 
 {
-  "project": 4,
+  "project": 1,
   "description": "Test the assembly and functionality of the MacBook to ensure proper assembly and performance of all components.",
   "preconditions": "All MacBook components (display, keyboard, motherboard, battery, trackpad, etc.) must be available and in working condition.",
   "test_steps": "1. Verify all MacBook parts are correctly assembled. 2. Power on the MacBook. 3. Test the functionality of the keyboard, trackpad, display, and ports. 4. Check for any visible defects or malfunctions.",
@@ -198,10 +198,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 POST http://localhost:8000/api/bugreport/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjg5OTA0LCJpYXQiOjE3MzI2ODYzMDQsImp0aSI6IjIwMzc1ZjNiMzgyODRmNWFhZTAwYTg5MmY2ZjZkNjA4IiwidXNlcl9pZCI6MX0.if7YeV9Plrd8Yd7EZjzLjItL4ZQXMbbW3HlZ_I3VIrg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMwNTEzLCJpYXQiOjE3MzI3MjY5MTMsImp0aSI6Ijk3MGRhMDBhMzA2MTQ2YTM5YmM1ZmU2ZGNlYmE1ODQyIiwidXNlcl9pZCI6MX0.LrcsldoMJvEjjombiK_0o6uCVXDkoZbtRJa6ssSnkHU
 
 {
-  "project": 4,
+  "project": 1,
   "summary": "Defective screen detected during assembly.",
   "steps_to_reproduce": "1. Begin assembly process. 2. Attach screen to chassis. 3. Conduct quality check. 4. Notice unresponsive pixels on the screen.",
   "severity": "High",
@@ -212,13 +212,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/testreport/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjUyMjU1LCJpYXQiOjE3MzI2NTE5NTUsImp0aSI6ImE0M2Y0NGRmNTA4ZDQzNjQ4ZWI3NjI3ZjJkNjBmMDRmIiwidXNlcl9pZCI6MX0.bBePkjYlRXPV9-1_HCimlVaoz0DKsbSlOSUCe1sJquU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMwNTEzLCJpYXQiOjE3MzI3MjY5MTMsImp0aSI6Ijk3MGRhMDBhMzA2MTQ2YTM5YmM1ZmU2ZGNlYmE1ODQyIiwidXNlcl9pZCI6MX0.LrcsldoMJvEjjombiK_0o6uCVXDkoZbtRJa6ssSnkHU
 
 ### CREATE TEST REPORT
 
 POST http://localhost:8000/api/testreport/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjUyMjU1LCJpYXQiOjE3MzI2NTE5NTUsImp0aSI6ImE0M2Y0NGRmNTA4ZDQzNjQ4ZWI3NjI3ZjJkNjBmMDRmIiwidXNlcl9pZCI6MX0.bBePkjYlRXPV9-1_HCimlVaoz0DKsbSlOSUCe1sJquU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMwNTEzLCJpYXQiOjE3MzI3MjY5MTMsImp0aSI6Ijk3MGRhMDBhMzA2MTQ2YTM5YmM1ZmU2ZGNlYmE1ODQyIiwidXNlcl9pZCI6MX0.LrcsldoMJvEjjombiK_0o6uCVXDkoZbtRJa6ssSnkHU
 
 {
   "project": 1

@@ -1,4 +1,6 @@
+from django import forms
 from django.contrib import admin
+from django.forms import ValidationError
 from django.utils.timezone import localtime
 
 from api.models import Project, TestPlan, TestCase, TestCoverage, BugReport, TestReport
@@ -33,7 +35,11 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(TestPlan)
 class TestPlanAdmin(admin.ModelAdmin):
-    list_display = ("project", "formatted_created_at", "formatted_updated_at")
+    list_display = (
+        "project",
+        "formatted_created_at",
+        "formatted_updated_at"
+    )
 
     def formatted_created_at(self, obj):
         return self.format_datetime(obj.created_at)
@@ -56,12 +62,13 @@ class TestPlanAdmin(admin.ModelAdmin):
 @admin.register(TestCase)
 class TestCaseAdmin(admin.ModelAdmin):
     list_display = (
-        "project",
         "testcaseID",
+        "project",
         "status",
         "formatted_created_at",
         "formatted_updated_at",
     )
+    readonly_fields = ("testcaseID",)
 
     def formatted_created_at(self, obj):
         return self.format_datetime(obj.created_at)
@@ -84,12 +91,13 @@ class TestCaseAdmin(admin.ModelAdmin):
 @admin.register(TestCoverage)
 class TestCoverageAdmin(admin.ModelAdmin):
     list_display = (
-        "project",
         "feature_id",
+        "project",
         "status",
         "formatted_created_at",
         "formatted_updated_at",
     )
+    readonly_fields = ("feature_id",)
 
     def formatted_created_at(self, obj):
         return self.format_datetime(obj.created_at)
@@ -113,11 +121,14 @@ class TestCoverageAdmin(admin.ModelAdmin):
 class BugReportAdmin(admin.ModelAdmin):
     list_display = (
         "bug_id",
+        "project",
         "status",
         "severity",
+        "evidence",
         "formatted_created_at",
         "formatted_updated_at",
     )
+    readonly_fields = ("bug_id",)
 
     def formatted_created_at(self, obj):
         return self.format_datetime(obj.created_at)

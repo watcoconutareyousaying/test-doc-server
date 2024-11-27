@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
     "username": "admin",
-    "password": "ios"
+    "password": "admin"
 }
 
 
@@ -19,7 +19,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 POST http://localhost:8000/api/project/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ1ODE1LCJpYXQiOjE3MzI2NDU1MTUsImp0aSI6IjA3NTk2YmUyYTA0NTRmYzA5MWU4NTY3N2RmOWQ4ZjRhIiwidXNlcl9pZCI6MX0.aOqhnbW96flkkIvL_xZJ81Xt56PXIjC8PZknq3695Q4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjg5OTA0LCJpYXQiOjE3MzI2ODYzMDQsImp0aSI6IjIwMzc1ZjNiMzgyODRmNWFhZTAwYTg5MmY2ZjZkNjA4IiwidXNlcl9pZCI6MX0.if7YeV9Plrd8Yd7EZjzLjItL4ZQXMbbW3HlZ_I3VIrg
 
 {
     "name": "Mac-Book"
@@ -51,10 +51,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 POST http://localhost:8000/api/testplan/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ1ODE1LCJpYXQiOjE3MzI2NDU1MTUsImp0aSI6IjA3NTk2YmUyYTA0NTRmYzA5MWU4NTY3N2RmOWQ4ZjRhIiwidXNlcl9pZCI6MX0.aOqhnbW96flkkIvL_xZJ81Xt56PXIjC8PZknq3695Q4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjg5OTA0LCJpYXQiOjE3MzI2ODYzMDQsImp0aSI6IjIwMzc1ZjNiMzgyODRmNWFhZTAwYTg5MmY2ZjZkNjA4IiwidXNlcl9pZCI6MX0.if7YeV9Plrd8Yd7EZjzLjItL4ZQXMbbW3HlZ_I3VIrg
 
 {
-  "project": 1,
+  "project": 4,
   "objective": "To ensure quality for the new product launch",
   "scope_in": "Functional testing, Performance testing",
   "scope_out": "Security testing, Usability testing",
@@ -131,10 +131,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 POST http://localhost:8000/api/testcase/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ2ODk1LCJpYXQiOjE3MzI2NDY1OTUsImp0aSI6IjNhMDIwM2Y2M2Q2YjQyZjM5M2FhZjdlMmIzYmE5Y2JjIiwidXNlcl9pZCI6MX0.AIGiGxu6QQA02oPIOW2CN6B1P6JCwrPmbyrj_FtutW8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjg5OTA0LCJpYXQiOjE3MzI2ODYzMDQsImp0aSI6IjIwMzc1ZjNiMzgyODRmNWFhZTAwYTg5MmY2ZjZkNjA4IiwidXNlcl9pZCI6MX0.if7YeV9Plrd8Yd7EZjzLjItL4ZQXMbbW3HlZ_I3VIrg
 
 {
-  "project": 1,
+  "project": 4,
   "description": "Test the assembly and functionality of the MacBook to ensure proper assembly and performance of all components.",
   "preconditions": "All MacBook components (display, keyboard, motherboard, battery, trackpad, etc.) must be available and in working condition.",
   "test_steps": "1. Verify all MacBook parts are correctly assembled. 2. Power on the MacBook. 3. Test the functionality of the keyboard, trackpad, display, and ports. 4. Check for any visible defects or malfunctions.",
@@ -170,24 +170,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/testcoverage/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ2ODk1LCJpYXQiOjE3MzI2NDY1OTUsImp0aSI6IjNhMDIwM2Y2M2Q2YjQyZjM5M2FhZjdlMmIzYmE5Y2JjIiwidXNlcl9pZCI6MX0.AIGiGxu6QQA02oPIOW2CN6B1P6JCwrPmbyrj_FtutW8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzE1NzIyLCJpYXQiOjE3MzI3MTIxMjIsImp0aSI6ImRhNTg4M2I3NTU2MTQyMzY4ODgwYTFhZmNlYzg1OThlIiwidXNlcl9pZCI6MX0.YlSC9jzTWJaNp_VG54j-CaGx_q3Nv4A6KKW1PFv3fa4
 
+### CREATE TEST COVERAGE
+POST http://localhost:8000/api/testcoverage/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzE1NzIyLCJpYXQiOjE3MzI3MTIxMjIsImp0aSI6ImRhNTg4M2I3NTU2MTQyMzY4ODgwYTFhZmNlYzg1OThlIiwidXNlcl9pZCI6MX0.YlSC9jzTWJaNp_VG54j-CaGx_q3Nv4A6KKW1PFv3fa4
+
+{
+    "project": 4,
+    "feature_description": "Description based on mac-book product",
+    "test_cases": [
+        "TC_0001",
+        "TC_0002"
+    ],
+    "status": "Covered"
+}
 
 ### BUG REPORT LIST
 
 GET http://localhost:8000/api/bugreport/
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjk0MDEwLCJpYXQiOjE3MzI2OTA0MTAsImp0aSI6ImJkNzIyNWY0ZTZlODQzNDU5MmNjMzQ2ZDJkNDg5ODYxIiwidXNlcl9pZCI6MX0.0Y5YkOs3_YncsoKurMiGvwrQcvB2lE8f_gycdYLzNIM
 
 
 ### CREATE BUG REPORT 
 
 POST http://localhost:8000/api/bugreport/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjQ5NDk4LCJpYXQiOjE3MzI2NDkxOTgsImp0aSI6ImNiNmRhYmNiYmRjMjQxMzJhYTIwMzlkMzc2YmFhZDcxIiwidXNlcl9pZCI6MX0.1WvODw6beU1AI1LL5UdvT-o-zp2VtOtsXSFZ6Oy5M94
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNjg5OTA0LCJpYXQiOjE3MzI2ODYzMDQsImp0aSI6IjIwMzc1ZjNiMzgyODRmNWFhZTAwYTg5MmY2ZjZkNjA4IiwidXNlcl9pZCI6MX0.if7YeV9Plrd8Yd7EZjzLjItL4ZQXMbbW3HlZ_I3VIrg
 
 {
-  "project": 1,
+  "project": 4,
   "summary": "Defective screen detected during assembly.",
   "steps_to_reproduce": "1. Begin assembly process. 2. Attach screen to chassis. 3. Conduct quality check. 4. Notice unresponsive pixels on the screen.",
   "severity": "High",

@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 
 from api.models import Project, TestPlan, TestCase, TestCoverage, BugReport, TestReport
 
@@ -69,17 +71,15 @@ class TestCaseSerializer(serializers.ModelSerializer):
         )
         extra_kwargs = {"testcaseID": {"required": False}}
 
-        def create(self, validated_data):
-            # Ensure the `testcaseID` is generated when creating the instance
-            testcase = TestCase(**validated_data)
-            testcase.save()
-            return testcase
+    def create(self, validated_data):
+        return TestCase.objects.create(**validated_data)
 
 
 class TestCoverageSerializer(serializers.ModelSerializer):
     project = serializers.PrimaryKeyRelatedField(
         queryset=Project.objects.all())
     test_cases = serializers.SerializerMethodField()
+    # test_cases = serializers.ListField(child=serializers.CharField())
 
     class Meta:
         model = TestCoverage
@@ -93,51 +93,29 @@ class TestCoverageSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
-        extra_kwargs = {"feature_id": {"required": False}}
+        extra_kwargs = {
+            "feature_id": {"required": False},
+            "status": {"required": False},
+        }
 
     def get_test_cases(self, obj):
-        return [
-            test_case.testcaseID
-            for test_case in obj.test_cases.filter(project=obj.project)
-        ]
+        test_cases = obj.test_cases.all()
+        return [test_case.testcaseID for test_case in test_cases]
 
     def create(self, validated_data):
-        test_cases_data = validated_data.pop("test_cases", [])
+        print("validated_data", validated_data)
+        test_case_ids = validated_data.pop('test_cases', [])
 
+        test_cases = TestCase.objects.filter(testcaseID__in=test_case_ids)
+
+        # Create the TestCoverage object
         test_coverage = TestCoverage.objects.create(**validated_data)
 
-        for testcase_id in test_cases_data:
-            try:
-                test_case = TestCase.objects.get(
-                    testcaseID=testcase_id,
-                    project=validated_data['project']
-                )
-                test_coverage.test_cases.add(test_case)
-            except TestCase.DoesNotExist:
-                raise serializers.ValidationError(
-                    f"TestCase with ID '{
-                        testcase_id}' does not exist for the project."
-                )
+        # Associate the TestCase instances with the TestCoverage object
+        test_coverage.test_cases.set(test_cases)
+        test_coverage.save()
 
         return test_coverage
-
-    def update(self, instance, validated_data):
-        test_cases_data = validated_data.pop("test_cases", [])
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        instance.save()
-
-        if test_cases_data:
-            instance.test_cases.clear()
-            for test_case_data in test_cases_data:
-                test_case = TestCase.objects.get(
-                    testcaseID=test_case_data["testcaseID"]
-                )
-                instance.test_cases.add(test_case)
-
-        instance.update_status()
-        return instance
 
 
 class BugReportSerializer(serializers.ModelSerializer):

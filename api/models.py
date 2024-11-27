@@ -106,7 +106,7 @@ class TestCoverage(models.Model):
     feature_id = models.CharField(max_length=20)
     feature_description = models.TextField()
     test_cases = models.ManyToManyField(
-        "TestCase", related_name="test_coverages")
+        TestCase, related_name="test_coverages")
     status = models.CharField(
         max_length=20, choices=StatusChoices, default=StatusChoices.NOT_COVERED
     )
@@ -133,9 +133,9 @@ class TestCoverage(models.Model):
 
     def update_status(self):
         if all(test_case.status == "Pass" for test_case in self.test_cases.all()):
-            self.status = "Covered"
+            self.status = self.StatusChoices.COVERED
         else:
-            self.status = "Not Covered"
+            self.status = self.StatusChoices.NOT_COVERED
         self.save()
 
 

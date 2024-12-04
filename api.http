@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
     "username": "admin",
-    "password": "ios"
+    "password": "admin"
 }
 
 
@@ -29,7 +29,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/projects/2/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMyNTA1LCJpYXQiOjE3MzI3Mjg5MDUsImp0aSI6ImIxYmNjOGZiMmJjZTRhY2M4YTM4YTdlOGExYTc4NzJjIiwidXNlcl9pZCI6MX0.CvR79G7UDDIepEhYsSnNbGS4_MVaR9-Y3OMaDAIWS_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMjk5NjEzLCJpYXQiOjE3MzMyOTYwMTMsImp0aSI6Ijc4ODQzOTAwYmYzMjQxNGRhZmJlMWU2YWE4NWM1NjQ4IiwidXNlcl9pZCI6MX0.2cUuDrW_3rR6sxLYCSWyr80hqwS6nndszClhziEyXdE
 
 ### UPDATE PROJECT DETAIL
 
@@ -45,7 +45,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/testplans/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMyNTA1LCJpYXQiOjE3MzI3Mjg5MDUsImp0aSI6ImIxYmNjOGZiMmJjZTRhY2M4YTM4YTdlOGExYTc4NzJjIiwidXNlcl9pZCI6MX0.CvR79G7UDDIepEhYsSnNbGS4_MVaR9-Y3OMaDAIWS_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMjk5NjEzLCJpYXQiOjE3MzMyOTYwMTMsImp0aSI6Ijc4ODQzOTAwYmYzMjQxNGRhZmJlMWU2YWE4NWM1NjQ4IiwidXNlcl9pZCI6MX0.2cUuDrW_3rR6sxLYCSWyr80hqwS6nndszClhziEyXdE
 
 ### CREATE TESTPLAN
 
@@ -85,7 +85,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/testplans/2/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMyNTA1LCJpYXQiOjE3MzI3Mjg5MDUsImp0aSI6ImIxYmNjOGZiMmJjZTRhY2M4YTM4YTdlOGExYTc4NzJjIiwidXNlcl9pZCI6MX0.CvR79G7UDDIepEhYsSnNbGS4_MVaR9-Y3OMaDAIWS_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMzE3ODczLCJpYXQiOjE3MzMzMTQyNzMsImp0aSI6ImVmNmY5NzVhNzE5MTRlZWY4NjdkNGYyNTBlNmI2ZjgyIiwidXNlcl9pZCI6MX0.nAb8udbPNGSepFDVH336bE3vLRYMJyDSuKQiFpfPO1c
 
 ### UPDATE TESTPLAN DETAIL
 
@@ -120,6 +120,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
   "approval_process": "Quality assurance sign-off from production and QA leads",
   "sign_off_authorities": "production_manager"
 }
+
+
+### TESTPLAN EXPORT 
+GET http://localhost:8000/api/testplans/2/?export=true
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMzE3ODczLCJpYXQiOjE3MzMzMTQyNzMsImp0aSI6ImVmNmY5NzVhNzE5MTRlZWY4NjdkNGYyNTBlNmI2ZjgyIiwidXNlcl9pZCI6MX0.nAb8udbPNGSepFDVH336bE3vLRYMJyDSuKQiFpfPO1c
 
 ### TESTCASE LIST
 
@@ -208,14 +214,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/testreport/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMwNTEzLCJpYXQiOjE3MzI3MjY5MTMsImp0aSI6Ijk3MGRhMDBhMzA2MTQ2YTM5YmM1ZmU2ZGNlYmE1ODQyIiwidXNlcl9pZCI6MX0.LrcsldoMJvEjjombiK_0o6uCVXDkoZbtRJa6ssSnkHU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMzE3ODczLCJpYXQiOjE3MzMzMTQyNzMsImp0aSI6ImVmNmY5NzVhNzE5MTRlZWY4NjdkNGYyNTBlNmI2ZjgyIiwidXNlcl9pZCI6MX0.nAb8udbPNGSepFDVH336bE3vLRYMJyDSuKQiFpfPO1c
 
 ### CREATE TEST REPORT
 
 POST http://localhost:8000/api/testreport/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMwNTEzLCJpYXQiOjE3MzI3MjY5MTMsImp0aSI6Ijk3MGRhMDBhMzA2MTQ2YTM5YmM1ZmU2ZGNlYmE1ODQyIiwidXNlcl9pZCI6MX0.LrcsldoMJvEjjombiK_0o6uCVXDkoZbtRJa6ssSnkHU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMzE3ODczLCJpYXQiOjE3MzMzMTQyNzMsImp0aSI6ImVmNmY5NzVhNzE5MTRlZWY4NjdkNGYyNTBlNmI2ZjgyIiwidXNlcl9pZCI6MX0.nAb8udbPNGSepFDVH336bE3vLRYMJyDSuKQiFpfPO1c
 
 {
-  "project": 1
+  "project": 4
 }

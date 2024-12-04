@@ -162,5 +162,5 @@ cython_debug/
 #.idea/
 
 
-# From Project Files
+# Project Temporary File Storage
 media

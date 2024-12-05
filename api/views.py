@@ -1,12 +1,12 @@
 import os
 import openpyxl
-from io import BytesIO
+from datetime import datetime
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework import generics
-from openpyxl.styles import PatternFill, Font
+from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
 from typing import Dict, Optional, cast
 
 from server import settings
@@ -19,6 +19,22 @@ from api.serializers import (
     BugReportSerializer,
     TestReportSerializer,
 )
+
+# tools for excel sheet
+
+border_style = Border(
+    left=Side(style='thin'),
+    right=Side(style='thin'),
+    top=Side(style='thin'),
+    bottom=Side(style='thin')
+)
+
+header_fill = PatternFill(
+    start_color="22f071", end_color="22f071", fill_type="solid")
+header_font = Font(bold=True)
+header_alignment = Alignment(horizontal="center", vertical="center")
+cell_alignment_wrap = Alignment(wrap_text=True, vertical="top")
+cell_alignment_center = Alignment(horizontal="center", vertical="center")
 
 # handle project list
 # Created by      :   Nantha
@@ -80,18 +96,12 @@ class TestPlanDetailView(generics.RetrieveUpdateDestroyAPIView):
             'name', flat=True).first() if project_id else None
 
         data['project'] = project_name or f"Unknown Project (ID: {project_id})"
-        # return response
-        print(data)
 
         workbook = openpyxl.Workbook()
         sheet = workbook.active
         assert sheet is not None, "Failed"
 
         sheet.title = 'Test Plan'
-
-        header_fill = PatternFill(
-            start_color="22f071", end_color="22f071", fill_type="solid")
-        header_font = Font(bold=True)
 
         headers = ["Sections", "Description"]
 
@@ -100,6 +110,7 @@ class TestPlanDetailView(generics.RetrieveUpdateDestroyAPIView):
         for cell in sheet[1]:
             cell.fill = header_fill
             cell.font = header_font
+            cell.alignment = header_alignment
 
         sections = [
             ("Project", data.get('project')),
@@ -133,11 +144,32 @@ class TestPlanDetailView(generics.RetrieveUpdateDestroyAPIView):
         for section, description in sections:
             sheet.append([section, description])
 
+        for col in sheet.columns:
+            max_length = 0
+            column = col[0].column_letter
+
+            for cell in col:
+                try:
+                    if cell.value:
+                        max_length = max(max_length, len(str(cell.value)))
+                except:
+                    pass
+
+            adjusted_width = (max_length + 2)
+            sheet.column_dimensions[column].width = adjusted_width
+
+            for cell in col:
+                cell.alignment = Alignment(wrap_text=True)
+                if cell.value:
+                    cell.border = border_style
+
+        current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
         media_root = settings.MEDIA_ROOT
         download_path = os.path.join(media_root, 'download')
         os.makedirs(download_path, exist_ok=True)  # Ensure the folder exists
 
-        file_path = os.path.join(download_path, 'testplan.xlsx')
+        file_name = f'testplan-{current_time}.xlsx'
+        file_path = os.path.join(download_path, file_name)
 
         # Save the workbook to the file path
         workbook.save(file_path)
@@ -149,14 +181,97 @@ class TestPlanDetailView(generics.RetrieveUpdateDestroyAPIView):
         })
 
 # handle Testcase [list/create]
-# Created by      :   Nantha
-# Created date    :   26/11/2024
+# Created by    : Nantha
+# Created date  : 26/11/2024
+# updated date  : 05/12/2024
 
 
 class TestCaseListView(generics.ListCreateAPIView):
     queryset = TestCase.objects.all()
     serializer_class = TestCaseSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]\
+
+
+    def list(self, request, *args, **kwargs):
+        if 'export' in request.query_params:
+            return self.export_file(request, *args, **kwargs)
+
+        return super().list(request, *args, **kwargs)
+
+    def export_file(self, request, pk=None, *args, **kwargs):
+        project_id = pk
+        project_name = Project.objects.filter(id=project_id).values_list(
+            'name', flat=True).first() if project_id else None
+
+        if not project_id:
+            return Response({"detail": "Project ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        test_cases = TestCase.objects.filter(project_id=pk)
+        if not test_cases.exists():
+            return Response({"detail": "No test cases found for this project"}, status=status.HTTP_404_NOT_FOUND)
+
+        wb = openpyxl.Workbook()
+        sheet = wb.active
+        assert sheet is not None, "Failed"
+
+        sheet.title = "Test Cases"
+
+        headers = ["S.no", "Test Case ID", "Description", "Pre-conditions",
+                   "Test Steps", "Expected Results", "Actual Result", "Status"]
+        sheet.append(headers)
+
+        wrap_columns = ["Description", "Pre-conditions",
+                        "Test Steps", "Expected Results", "Actual Result"]
+
+        for cell in sheet[1]:
+            cell.fill = header_fill
+            cell.font = header_font
+            cell.alignment = header_alignment
+            cell.border = border_style
+
+        column_widths = [6, 15, 50, 50, 50, 50, 50, 15]
+        for i, width in enumerate(column_widths, start=1):
+            col_letter = get_column_letter(i)
+            sheet.column_dimensions[col_letter].width = width
+
+        wrap_columns = {"C", "D", "E", "F", "G"}
+
+        for idx, test_case in enumerate(test_cases, start=1):
+            row_data = [
+                idx,  # Serial number
+                test_case.testcaseID,
+                test_case.description,
+                test_case.preconditions,
+                test_case.test_steps,
+                test_case.expected_result,
+                test_case.actual_result,
+                test_case.status
+            ]
+            sheet.append(row_data)
+
+            for col_idx, cell in enumerate(sheet[idx + 1], start=1):
+                cell.border = border_style
+                if cell.column_letter in wrap_columns:
+                    cell.alignment = cell_alignment_wrap
+                else:
+                    cell.alignment = cell_alignment_center if col_idx <= 2 else Alignment(
+                        horizontal="left")
+
+        current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
+        media_root = settings.MEDIA_ROOT
+        download_path = os.path.join(media_root, 'download')
+        os.makedirs(download_path, exist_ok=True)
+
+        file_name = f'{project_name}_testcase-{current_time}.xlsx'
+        file_path = os.path.join(download_path, file_name)
+
+        wb.save(file_path)
+
+        return Response({
+            'message': 'File has been successfully saved.',
+            'file_path': file_path,
+        })
+
 
 # handle Testcase detail [retrieve-update-destory]
 # Created by      :   Nantha

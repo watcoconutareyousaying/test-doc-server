@@ -22,4 +22,6 @@ urlpatterns = [
     path("testcoverages/", TestCoverageListView.as_view(), name='testcoverages'),
     path("bugreport/", BugreportListView.as_view(), name="bug_report"),
     path("testreport/", TestreportListView.as_view(), name="test_report"),
+    
+    path("<int:pk>/testcases/", TestCaseListView.as_view(), name="export-testcases"),
 ]

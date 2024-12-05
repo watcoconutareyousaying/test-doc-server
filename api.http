@@ -45,7 +45,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/testplans/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMjk5NjEzLCJpYXQiOjE3MzMyOTYwMTMsImp0aSI6Ijc4ODQzOTAwYmYzMjQxNGRhZmJlMWU2YWE4NWM1NjQ4IiwidXNlcl9pZCI6MX0.2cUuDrW_3rR6sxLYCSWyr80hqwS6nndszClhziEyXdE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNDA3MDczLCJpYXQiOjE3MzM0MDM0NzMsImp0aSI6IjQyNDFkOTA0ODUwZjRkOTZhNjY5MjI0MjY0OWJlZTFiIiwidXNlcl9pZCI6MX0.FTh_AGxzvDXlISWIcBys_AGDawTXv1B9ENT7nwl6WDQ
 
 ### CREATE TESTPLAN
 
@@ -85,7 +85,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/testplans/2/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMzE3ODczLCJpYXQiOjE3MzMzMTQyNzMsImp0aSI6ImVmNmY5NzVhNzE5MTRlZWY4NjdkNGYyNTBlNmI2ZjgyIiwidXNlcl9pZCI6MX0.nAb8udbPNGSepFDVH336bE3vLRYMJyDSuKQiFpfPO1c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNDA3MDczLCJpYXQiOjE3MzM0MDM0NzMsImp0aSI6IjQyNDFkOTA0ODUwZjRkOTZhNjY5MjI0MjY0OWJlZTFiIiwidXNlcl9pZCI6MX0.FTh_AGxzvDXlISWIcBys_AGDawTXv1B9ENT7nwl6WDQ
 
 ### UPDATE TESTPLAN DETAIL
 
@@ -125,19 +125,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 ### TESTPLAN EXPORT 
 GET http://localhost:8000/api/testplans/2/?export=true
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMzE3ODczLCJpYXQiOjE3MzMzMTQyNzMsImp0aSI6ImVmNmY5NzVhNzE5MTRlZWY4NjdkNGYyNTBlNmI2ZjgyIiwidXNlcl9pZCI6MX0.nAb8udbPNGSepFDVH336bE3vLRYMJyDSuKQiFpfPO1c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNDA3MDczLCJpYXQiOjE3MzM0MDM0NzMsImp0aSI6IjQyNDFkOTA0ODUwZjRkOTZhNjY5MjI0MjY0OWJlZTFiIiwidXNlcl9pZCI6MX0.FTh_AGxzvDXlISWIcBys_AGDawTXv1B9ENT7nwl6WDQ
 
 ### TESTCASE LIST
 
 GET http://localhost:8000/api/testcases/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMyNTA1LCJpYXQiOjE3MzI3Mjg5MDUsImp0aSI6ImIxYmNjOGZiMmJjZTRhY2M4YTM4YTdlOGExYTc4NzJjIiwidXNlcl9pZCI6MX0.CvR79G7UDDIepEhYsSnNbGS4_MVaR9-Y3OMaDAIWS_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNDA3MDczLCJpYXQiOjE3MzM0MDM0NzMsImp0aSI6IjQyNDFkOTA0ODUwZjRkOTZhNjY5MjI0MjY0OWJlZTFiIiwidXNlcl9pZCI6MX0.FTh_AGxzvDXlISWIcBys_AGDawTXv1B9ENT7nwl6WDQ
 
 ### CREATE TESTCASE
 
 POST http://localhost:8000/api/testcases/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMyNTA1LCJpYXQiOjE3MzI3Mjg5MDUsImp0aSI6ImIxYmNjOGZiMmJjZTRhY2M4YTM4YTdlOGExYTc4NzJjIiwidXNlcl9pZCI6MX0.CvR79G7UDDIepEhYsSnNbGS4_MVaR9-Y3OMaDAIWS_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNDA3MDczLCJpYXQiOjE3MzM0MDM0NzMsImp0aSI6IjQyNDFkOTA0ODUwZjRkOTZhNjY5MjI0MjY0OWJlZTFiIiwidXNlcl9pZCI6MX0.FTh_AGxzvDXlISWIcBys_AGDawTXv1B9ENT7nwl6WDQ
 
 {
   "project": 1,
@@ -146,14 +146,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
   "test_steps": "1. Verify all MacBook parts are correctly assembled. 2. Power on the MacBook. 3. Test the functionality of the keyboard, trackpad, display, and ports. 4. Check for any visible defects or malfunctions.",
   "expected_result": "The MacBook should power on, with all components functioning correctly and no visible defects.",
   "actual_result": "MacBook powered on successfully, all components (keyboard, trackpad, display, ports) are working as expected with no defects.",
-  "status": "Fail"
+  "status": "Pass"
 }
 
 ### TESTCASE DETAIL
 
 GET http://localhost:8000/api/testcase/2/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMyNTA1LCJpYXQiOjE3MzI3Mjg5MDUsImp0aSI6ImIxYmNjOGZiMmJjZTRhY2M4YTM4YTdlOGExYTc4NzJjIiwidXNlcl9pZCI6MX0.CvR79G7UDDIepEhYsSnNbGS4_MVaR9-Y3OMaDAIWS_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzMzk0MjQxLCJpYXQiOjE3MzMzOTA2NDEsImp0aSI6ImY0MzY2MDI0ZDZiNTRhNWM4NThkZDllYTA4NzI3MjVlIiwidXNlcl9pZCI6MX0.HcY8tJdjLHumue2Pf4-Dt1Jzv6tkZF9lNtRpd4BM3CU
 
 
 ### UPDATE TESTCASE DETAIL
@@ -171,6 +171,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
   "actual_result": "MacBook powered on successfully, all components (keyboard, trackpad, display, ports) are not working as expected with defects.",
   "status": "Fail"
 }
+
+### TESTCASE EXPORT
+
+GET http://localhost:8000/api/1/testcases/?export=true
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNDA3MDczLCJpYXQiOjE3MzM0MDM0NzMsImp0aSI6IjQyNDFkOTA0ODUwZjRkOTZhNjY5MjI0MjY0OWJlZTFiIiwidXNlcl9pZCI6MX0.FTh_AGxzvDXlISWIcBys_AGDawTXv1B9ENT7nwl6WDQ
 
 ### TEST COVERAGE LIST
 

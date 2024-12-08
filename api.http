@@ -1,25 +1,46 @@
-### LOGIN 
+### REGISTER
 
-POST http://localhost:8000/api/token/
+POST http://localhost:8000/account/register/
 Content-Type: application/json
 
 {
-    "username": "admin",
+  "email": "macbook@example.com",
+  "name": "macbook",
+  "password": "password"
+}
+
+### LOGIN 
+
+POST http://localhost:8000/account/login/
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
     "password": "admin"
+}
+
+### LOGOUT
+
+POST http://localhost:8000/account/logout/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNjU2ODQxLCJpYXQiOjE3MzM2NTMyNDEsImp0aSI6IjU0NDdlODA0ODJkOTQ5MjQ4NTA4NjczOTIzYjc0ODBjIiwidXNlcl9pZCI6MX0.EbIbytmO8aMetI6krr2fpskKuxRi9QouE8Yn3lgawdw
+
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNjI0NTI0MSwiaWF0IjoxNzMzNjUzMjQxLCJqdGkiOiJkY2VmYzg3NTE4OWE0MTkwYWU3YjUzNTgzN2U3ZjI2ZSIsInVzZXJfaWQiOjF9.dMZvjYfP_9gs9r3j6aK1WBsAFIepglPPvOse6bqWJb0"
 }
 
 
 ### PROJECT LIST
 
-GET http://localhost:8000/api/project/
+GET http://localhost:8000/api/projects/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMyNTA1LCJpYXQiOjE3MzI3Mjg5MDUsImp0aSI6ImIxYmNjOGZiMmJjZTRhY2M4YTM4YTdlOGExYTc4NzJjIiwidXNlcl9pZCI6MX0.CvR79G7UDDIepEhYsSnNbGS4_MVaR9-Y3OMaDAIWS_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNjQ0NzgxLCJpYXQiOjE3MzM2NDExODEsImp0aSI6IjkxZTJmMjRhNmE0NTRkZmQ5YzhjOTBmMTZlNzE4NGFhIiwidXNlcl9pZCI6MX0.oMhI7Y-jP0D2iLmjL9AD6CXuPspVhSgY7zprQXWKjbo
 
 ### CREATE PROJECT
 
-POST http://localhost:8000/api/project/
+POST http://localhost:8000/api/projects/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMyNTA1LCJpYXQiOjE3MzI3Mjg5MDUsImp0aSI6ImIxYmNjOGZiMmJjZTRhY2M4YTM4YTdlOGExYTc4NzJjIiwidXNlcl9pZCI6MX0.CvR79G7UDDIepEhYsSnNbGS4_MVaR9-Y3OMaDAIWS_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNjQ0NzgxLCJpYXQiOjE3MzM2NDExODEsImp0aSI6IjkxZTJmMjRhNmE0NTRkZmQ5YzhjOTBmMTZlNzE4NGFhIiwidXNlcl9pZCI6MX0.oMhI7Y-jP0D2iLmjL9AD6CXuPspVhSgY7zprQXWKjbo
 
 {
     "name": "iMac"

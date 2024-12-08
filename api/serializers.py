@@ -103,7 +103,6 @@ class TestCoverageSerializer(serializers.ModelSerializer):
         return [test_case.testcaseID for test_case in test_cases]
 
     def create(self, validated_data):
-        print("validated_data", validated_data)
         test_case_ids = validated_data.pop('test_cases', [])
 
         test_cases = TestCase.objects.filter(testcaseID__in=test_case_ids)

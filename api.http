@@ -4,8 +4,8 @@ POST http://localhost:8000/account/register/
 Content-Type: application/json
 
 {
-  "email": "macbook@example.com",
-  "name": "macbook",
+  "email": "windows@example.com",
+  "name": "Windows",
   "password": "password"
 }
 
@@ -23,10 +23,10 @@ Content-Type: application/json
 
 POST http://localhost:8000/account/logout/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNjU2ODQxLCJpYXQiOjE3MzM2NTMyNDEsImp0aSI6IjU0NDdlODA0ODJkOTQ5MjQ4NTA4NjczOTIzYjc0ODBjIiwidXNlcl9pZCI6MX0.EbIbytmO8aMetI6krr2fpskKuxRi9QouE8Yn3lgawdw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNzI5OTQ2LCJpYXQiOjE3MzM3MjYzNDYsImp0aSI6IjU5MDhiNDgyNjM5NzQ3NGI5MDM3ZmI2NGY4MjMwOGZlIiwidXNlcl9pZCI6MX0.lwa7kQAl6Yz0LoBKbKSXz5g6zNJg7l3mVodebMfwcFA
 
 {
-    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNjI0NTI0MSwiaWF0IjoxNzMzNjUzMjQxLCJqdGkiOiJkY2VmYzg3NTE4OWE0MTkwYWU3YjUzNTgzN2U3ZjI2ZSIsInVzZXJfaWQiOjF9.dMZvjYfP_9gs9r3j6aK1WBsAFIepglPPvOse6bqWJb0"
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNjMxODM0NiwiaWF0IjoxNzMzNzI2MzQ2LCJqdGkiOiI1MzExYzkwYzFlYmU0ZDE0Yjg4ZTk5NWI1NTA2MTk5NyIsInVzZXJfaWQiOjF9.f0Ir53BvZit97fJik9CZmWB3gzodBXzIspyYRAovbr0"
 }
 
 
@@ -34,13 +34,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/projects/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNjQ0NzgxLCJpYXQiOjE3MzM2NDExODEsImp0aSI6IjkxZTJmMjRhNmE0NTRkZmQ5YzhjOTBmMTZlNzE4NGFhIiwidXNlcl9pZCI6MX0.oMhI7Y-jP0D2iLmjL9AD6CXuPspVhSgY7zprQXWKjbo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNzI5OTQ2LCJpYXQiOjE3MzM3MjYzNDYsImp0aSI6IjU5MDhiNDgyNjM5NzQ3NGI5MDM3ZmI2NGY4MjMwOGZlIiwidXNlcl9pZCI6MX0.lwa7kQAl6Yz0LoBKbKSXz5g6zNJg7l3mVodebMfwcFA
 
 ### CREATE PROJECT
 
 POST http://localhost:8000/api/projects/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNjQ0NzgxLCJpYXQiOjE3MzM2NDExODEsImp0aSI6IjkxZTJmMjRhNmE0NTRkZmQ5YzhjOTBmMTZlNzE4NGFhIiwidXNlcl9pZCI6MX0.oMhI7Y-jP0D2iLmjL9AD6CXuPspVhSgY7zprQXWKjbo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNzM0NDY4LCJpYXQiOjE3MzM3MzA4NjgsImp0aSI6IjU5MjY3MGQ2YjMzZTQ4OTFiZDMzYmU2NGFmYWFmN2ZmIiwidXNlcl9pZCI6MX0.uZOU8GjU0bEREa4e9aMXkx0YE0drOfEkftnBTi1Ej_M
 
 {
     "name": "iMac"
@@ -208,12 +208,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 ### CREATE TEST COVERAGE
 POST http://localhost:8000/api/testcoverages/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzQwNjI5LCJpYXQiOjE3MzI3MzcwMjksImp0aSI6ImUwZDUzMTU0NzdlZTRhNWRiZmJiOTMzOTA5ZjQyMDhiIiwidXNlcl9pZCI6MX0.meyBuKnsZU1pi1dgU94UsMkxGlUJQOjBAXW8kYnBXLY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNzQxNTc1LCJpYXQiOjE3MzM3Mzc5NzUsImp0aSI6ImM2NTZmYTUwOWRjNDRhYWViZWM0ZmU5ZmE2YTRjZDAyIiwidXNlcl9pZCI6MX0.pGs11XXv18t6GSmDACMmwr0_ExymgODc6Q6tChNNY2w
 
 {
     "project": 1,
     "feature_description": "Description based on mac-book product",
-    "test_cases": ["TC_0010", "TC_0009"]
+    "test_cases": ["TC_0001", "TC_0002"]
 }
 
 ### BUG REPORT LIST

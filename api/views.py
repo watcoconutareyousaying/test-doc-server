@@ -210,6 +210,8 @@ class TestCaseListView(generics.ListCreateAPIView):
         if not test_cases.exists():
             return Response({"detail": "No test cases found for this project"}, status=status.HTTP_404_NOT_FOUND)
 
+        mapped_ids = {test_case.testcaseID: f"TC_{idx:04d}" for idx, test_case in enumerate(test_cases, start=1)}
+        
         wb = openpyxl.Workbook()
         sheet = wb.active
         assert sheet is not None, "Failed"
@@ -239,7 +241,8 @@ class TestCaseListView(generics.ListCreateAPIView):
         for idx, test_case in enumerate(test_cases, start=1):
             row_data = [
                 idx,  # Serial number
-                test_case.testcaseID,
+                # test_case.testcaseID,
+                mapped_ids[test_case.testcaseID],
                 test_case.description,
                 test_case.preconditions,
                 test_case.test_steps,
@@ -289,6 +292,17 @@ class TestCaseDetailView(generics.RetrieveUpdateDestroyAPIView):
 # Created date    :   26/11/2024
 
 class TestCoverageListView(generics.ListCreateAPIView):
+    queryset = TestCoverage.objects.all()
+    serializer_class = TestCoverageSerializer
+    permission_classes = [IsAuthenticated]
+
+
+# handle Testcoverage detail [retrieve-update-destory]
+# Created by      :   Nantha
+# Created date    :   09/12/2024
+
+
+class TestCoverageDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TestCoverage.objects.all()
     serializer_class = TestCoverageSerializer
     permission_classes = [IsAuthenticated]

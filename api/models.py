@@ -1,5 +1,5 @@
 import os
-from django.db import models
+from django.db import models, transaction
 # from django.contrib.auth.models import AbstractUser
 from account.models import UserData
 
@@ -66,7 +66,7 @@ class TestCase(models.Model):
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name="test_cases"
     )
-    testcaseID = models.CharField(max_length=10)
+    testcaseID = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     preconditions = models.TextField(blank=True)
     test_steps = models.TextField()
@@ -83,15 +83,22 @@ class TestCase(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.testcaseID:
-            # last_testcase = TestCase.objects.order_by("-id").first()
-            last_testcase = TestCase.objects.filter(
-                project=self.project).order_by("-id").first()
-            last_id = (
-                int(last_testcase.testcaseID.split(
-                    "_")[1]) if last_testcase else 0
-            )
-            next_id = last_id + 1
-            self.testcaseID = f"TC_{next_id:04d}"
+            with transaction.atomic():
+                last_testcase = TestCase.objects.filter(
+                    project=self.project).order_by("-id").first()
+                last_id = (
+                    int(last_testcase.testcaseID.split(
+                        "_")[1]) if last_testcase else 0
+                )
+                next_id = last_id + 1
+                new_testcaseID = f"TC_{next_id:04d}"
+
+                # Ensure uniqueness of testcaseID
+                while TestCase.objects.filter(testcaseID=new_testcaseID).exists():
+                    next_id += 1
+                    new_testcaseID = f"TC_{next_id:04d}"
+
+                self.testcaseID = new_testcaseID
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -104,7 +111,7 @@ class TestCoverage(models.Model):
         NOT_COVERED = "Not Covered"
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    feature_id = models.CharField(max_length=20)
+    feature_id = models.CharField(max_length=20, unique=True)
     feature_description = models.TextField()
     test_cases = models.ManyToManyField(
         TestCase, related_name="test_coverages")
@@ -122,14 +129,22 @@ class TestCoverage(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.feature_id:
-            last_feature = TestCoverage.objects.filter(
-                project=self.project).order_by("-id").first()
-            if last_feature:
-                last_id = int(last_feature.feature_id.split("_")[1])
-                new_id = f"FTR_{last_id + 1:04d}"
-            else:
-                new_id = "FTR_0001"
-            self.feature_id = new_id
+            with transaction.atomic():
+                last_feature = TestCoverage.objects.filter(
+                    project=self.project).order_by("-feature_id").first()
+
+                if last_feature and last_feature.feature_id.startswith("FTR_"):
+                    last_id = int(last_feature.feature_id.split("_")[1])
+                    new_id = f"FTR_{last_id + 1:04d}"
+                else:
+                    last_id = 0
+                    new_id = "FTR_0001"
+
+                while TestCoverage.objects.filter(feature_id=new_id).exists():
+                    last_id += 1
+                    new_id = f"FTR_{last_id + 1:04d}"
+
+                self.feature_id = new_id
         super().save(*args, **kwargs)
 
     def update_status(self):

@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from django.db import transaction
 
 
 from api.models import Project, TestPlan, TestCase, TestCoverage, BugReport, TestReport
-
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -70,16 +70,34 @@ class TestCaseSerializer(serializers.ModelSerializer):
             "updated_at",
         )
         extra_kwargs = {"testcaseID": {"required": False}}
-
+    
     def create(self, validated_data):
-        return TestCase.objects.create(**validated_data)
+        project = validated_data.get("project")
+        
+        # Use a transaction to ensure atomicity
+        with transaction.atomic():
+            # Get the last TestCase for the same project
+            last_testcase = TestCase.objects.filter(project=project).order_by("-id").first()
+            last_id = int(last_testcase.testcaseID.split("_")[1]) if last_testcase else 0
+            next_id = last_id + 1
+            new_testcaseID = f"TC_{next_id:04d}"
+            
+            # Ensure uniqueness of testcaseID
+            while TestCase.objects.filter(testcaseID=new_testcaseID).exists():
+                next_id += 1
+                new_testcaseID = f"TC_{next_id:04d}"
 
+            validated_data["testcaseID"] = validated_data.get("testcaseID", new_testcaseID)
+        
+        # Create the TestCase object
+        return TestCase.objects.create(**validated_data)
 
 class TestCoverageSerializer(serializers.ModelSerializer):
     project = serializers.PrimaryKeyRelatedField(
         queryset=Project.objects.all())
-    test_cases = serializers.SerializerMethodField()
-    # test_cases = serializers.ListField(child=serializers.CharField())
+    # test_cases = serializers.SerializerMethodField()
+    # test_cases = serializers.ListField(child=serializers.CharField(), required=False)
+    test_cases = serializers.PrimaryKeyRelatedField(queryset=TestCase.objects.all(), many=True)
 
     class Meta:
         model = TestCoverage
@@ -103,9 +121,15 @@ class TestCoverageSerializer(serializers.ModelSerializer):
         return [test_case.testcaseID for test_case in test_cases]
 
     def create(self, validated_data):
+        project = validated_data["project"]
         test_case_ids = validated_data.pop('test_cases', [])
 
-        test_cases = TestCase.objects.filter(testcaseID__in=test_case_ids)
+        test_cases = TestCase.objects.filter(testcaseID__in=test_case_ids, project=project)
+        if test_cases.count() != len(test_case_ids):
+            raise serializers.ValidationError(
+                "Some test cases do not belong to the specified project."
+            )
+        print("matching test cases :", test_cases)
 
         # Create the TestCoverage object
         test_coverage = TestCoverage.objects.create(**validated_data)

@@ -1,14 +1,16 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
+import os
+from django.db import models, transaction
+# from django.contrib.auth.models import AbstractUser
+from account.models import UserData
 
 
-class User(AbstractUser):
-    pass
+# class User(AbstractUser):
+#     pass
 
 
 class Project(models.Model):
     name = models.CharField(max_length=250)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(UserData, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -64,7 +66,7 @@ class TestCase(models.Model):
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name="test_cases"
     )
-    testcaseID = models.CharField(max_length=10, unique=True)
+    testcaseID = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     preconditions = models.TextField(blank=True)
     test_steps = models.TextField()
@@ -81,16 +83,26 @@ class TestCase(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.testcaseID:
-            last_testcase = TestCase.objects.order_by("-id").first()
-            last_id = (
-                int(last_testcase.testcaseID.split("_")[1]) if last_testcase else 0
-            )
-            next_id = last_id + 1
-            self.testcaseID = f"TC_{next_id:04d}"
+            with transaction.atomic():
+                last_testcase = TestCase.objects.filter(
+                    project=self.project).order_by("-id").first()
+                last_id = (
+                    int(last_testcase.testcaseID.split(
+                        "_")[1]) if last_testcase else 0
+                )
+                next_id = last_id + 1
+                new_testcaseID = f"TC_{next_id:04d}"
+
+                # Ensure uniqueness of testcaseID
+                while TestCase.objects.filter(testcaseID=new_testcaseID).exists():
+                    next_id += 1
+                    new_testcaseID = f"TC_{next_id:04d}"
+
+                self.testcaseID = new_testcaseID
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Test case {self.testcaseID} for Project {self.project.name}"
+        return f"{self.testcaseID} - {self.project.name}"
 
 
 class TestCoverage(models.Model):
@@ -101,7 +113,8 @@ class TestCoverage(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     feature_id = models.CharField(max_length=20, unique=True)
     feature_description = models.TextField()
-    test_cases = models.ManyToManyField("TestCase", related_name="test_coverages")
+    test_cases = models.ManyToManyField(
+        TestCase, related_name="test_coverages")
     status = models.CharField(
         max_length=20, choices=StatusChoices, default=StatusChoices.NOT_COVERED
     )
@@ -114,12 +127,25 @@ class TestCoverage(models.Model):
     def __str__(self):
         return f"Feature {self.feature_id} - {self.status}"
 
-    def update_status(self):
-        if all(test_case.status == "Pass" for test_case in self.test_cases.all()):
-            self.status = "Covered"
-        else:
-            self.status = "Not Covered"
-        self.save()
+    def save(self, *args, **kwargs):
+        if not self.feature_id:
+            with transaction.atomic():
+                last_feature = TestCoverage.objects.filter(
+                    project=self.project).order_by("-feature_id").first()
+
+                if last_feature and last_feature.feature_id.startswith("FTR_"):
+                    last_id = int(last_feature.feature_id.split("_")[1])
+                    new_id = f"FTR_{last_id + 1:04d}"
+                else:
+                    last_id = 0
+                    new_id = "FTR_0001"
+
+                while TestCoverage.objects.filter(feature_id=new_id).exists():
+                    last_id += 1
+                    new_id = f"FTR_{last_id + 1:04d}"
+
+                self.feature_id = new_id
+        super().save(*args, **kwargs)
 
 
 class BugReport(models.Model):
@@ -136,19 +162,23 @@ class BugReport(models.Model):
         CRITICAL = "Critical"
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    bug_id = models.CharField(max_length=10, unique=True)
+    bug_id = models.CharField(max_length=10)
     summary = models.TextField()
     steps_to_reproduce = models.TextField()
     severity = models.CharField(max_length=10, choices=SeverityChoices)
     status = models.CharField(
         max_length=15, choices=StatusChoices, default=StatusChoices.OPEN
     )
+    evidence = models.FileField(
+        upload_to='bug_reports/evidence/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.bug_id:
-            last_bug = BugReport.objects.all().order_by("id").last()
+            # last_bug = BugReport.objects.all().order_by("id").last()
+            last_bug = BugReport.objects.filter(
+                project=self.project).order_by("-id").first()
             if last_bug:
                 last_id = int(last_bug.bug_id[3:])
                 new_id = f"BUG{last_id + 1:04d}"
@@ -156,6 +186,12 @@ class BugReport(models.Model):
                 new_id = "BUG0001"
             self.bug_id = new_id
         super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.evidence:
+            if os.path.isfile(self.evidence.path):
+                os.remove(self.evidence.path)
+        super().delete(*args, **kwargs)
 
     class Meta:
         db_table = "bugreport"

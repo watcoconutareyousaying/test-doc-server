@@ -1,8 +1,15 @@
+import os
+import openpyxl
+from datetime import datetime
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework import generics
+from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
+from typing import Dict, Optional, cast
 
+from server import settings
 from api.models import Project, TestPlan, TestCase, TestCoverage, BugReport, TestReport
 from api.serializers import (
     ProjectSerializer,
@@ -13,177 +20,309 @@ from api.serializers import (
     TestReportSerializer,
 )
 
+# tools for excel sheet
 
-@api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
-def project_list(request):
+border_style = Border(
+    left=Side(style='thin'),
+    right=Side(style='thin'),
+    top=Side(style='thin'),
+    bottom=Side(style='thin')
+)
 
-    if request.method == "GET":
-        projects = Project.objects.all()
-        serializer = ProjectSerializer(projects, many=True)
-        return Response(serializer.data)
+header_fill = PatternFill(
+    start_color="22f071", end_color="22f071", fill_type="solid")
+header_font = Font(bold=True)
+header_alignment = Alignment(horizontal="center", vertical="center")
+cell_alignment_wrap = Alignment(wrap_text=True, vertical="top")
+cell_alignment_center = Alignment(horizontal="center", vertical="center")
 
-    elif request.method == "POST":
-        serializer = ProjectSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(created_by=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(["GET", "PUT", "DELETE"])
-@permission_classes([IsAuthenticated])
-def project_detail(request, pk):
-
-    try:
-        project = Project.objects.get(pk=pk)
-    except Project.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == "GET":
-        serializer = ProjectSerializer(project)
-        return Response(serializer.data)
-
-    elif request.method == "PUT":
-        serializer = ProjectSerializer(project, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == "DELETE":
-        project.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+# handle project list
+# Created by      :   Nantha
+# Created date    :   26/11/2024
 
 
-@api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
-def testplan_list(request):
+class ProjectListView(generics.ListCreateAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = [IsAuthenticated]
 
-    if request.method == "GET":
-        testplans = TestPlan.objects.all()
-        serializer = TestPlanSerializer(testplans, many=True)
-        return Response(serializer.data)
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
-    elif request.method == "POST":
-        serializer = TestPlanSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# handle project detail [retrieve-update-destory]
+# Created by      :   Nantha
+# Created date    :   26/11/2024
 
 
-@api_view(["GET", "PUT", "DELETE"])
-@permission_classes([IsAuthenticated])
-def testplan_detail(request, pk):
-    try:
-        testplan = TestPlan.objects.get(pk=pk)
-    except TestPlan.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = [IsAuthenticated]
 
-    if request.method == "GET":
-        serializer = TestPlanSerializer(testplan)
-        return Response(serializer.data)
-
-    elif request.method == "PUT":
-        serializer = TestPlanSerializer(testplan, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == "DELETE":
-        testplan.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+# handle testplan [list/create]
+# Created by      :   Nantha
+# Created date    :   26/11/2024
 
 
-@api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
-def testcase_list(request):
+class TestPlanListView(generics.ListCreateAPIView):
+    queryset = TestPlan.objects.all()
+    serializer_class = TestPlanSerializer
+    permission_classes = [IsAuthenticated]
 
-    if request.method == "GET":
-        testcase = TestCase.objects.all()
-        serializer = TestCaseSerializer(testcase, many=True)
-        return Response(serializer.data)
-
-    elif request.method == "POST":
-        serializer = TestCaseSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# handle Testplan detail [retrive-update-destory]
+# Created by      :   Nantha
+# Created date    :   26/11/2024
+# Updated date    :   04/12/2024
 
 
-@api_view(["GET", "PUT", "DELETE"])
-@permission_classes([IsAuthenticated])
-def testcase_detail(request, pk):
-    try:
-        testcase = TestCase.objects.get(pk=pk)
-    except TestCase.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+class TestPlanDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = TestPlan.objects.all()
+    serializer_class = TestPlanSerializer
+    permission_classes = [IsAuthenticated]
 
-    if request.method == "GET":
-        serializer = TestCaseSerializer(testcase)
-        return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        if 'export' in request.query_params:
+            return self.export_file(request, *args, **kwargs)
 
-    elif request.method == "PUT":
-        serializer = TestCaseSerializer(testcase, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super().get(request, *args, **kwargs)
 
-    elif request.method == "DELETE":
-        testcase.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def export_file(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        data: Dict[str, Optional[str]] = cast(
+            Dict[str, Optional[str]], response.data)
+
+        project_id: Optional[str] = data.get('project')
+        project_name = Project.objects.filter(id=project_id).values_list(
+            'name', flat=True).first() if project_id else None
+
+        data['project'] = project_name or f"Unknown Project (ID: {project_id})"
+
+        workbook = openpyxl.Workbook()
+        sheet = workbook.active
+        assert sheet is not None, "Failed"
+
+        sheet.title = 'Test Plan'
+
+        headers = ["Sections", "Description"]
+
+        sheet.append(headers)
+
+        for cell in sheet[1]:
+            cell.fill = header_fill
+            cell.font = header_font
+            cell.alignment = header_alignment
+
+        sections = [
+            ("Project", data.get('project')),
+            ("Objective", data.get('objective')),
+            ("Scope In", data.get('scope_in')),
+            ("Scope Out", data.get('scope_out')),
+            ("Test Levels", data.get('test_levels')),
+            ("Types of Testing", data.get('types_of_testing')),
+            ("Environment Details", data.get('environment_details')),
+            ("Test Data", data.get('test_data')),
+            ("Test Manager", data.get('test_manager')),
+            ("Test Leads", data.get('test_leads')),
+            ("Testers", data.get('testers')),
+            ("Developers", data.get('developers')),
+            ("Business Analysts", data.get('business_analysts')),
+            ("Milestones", data.get('milestones')),
+            ("Deadlines", data.get('deadlines')),
+            ("Dependencies", data.get('dependencies')),
+            ("Deliverables", data.get('deliverables')),
+            ("Entry Criteria", data.get('entry_criteria')),
+            ("Exit Criteria", data.get('exit_criteria')),
+            ("Risks", data.get('risks')),
+            ("Mitigation Strategies", data.get(
+                'mitigation_strategies')),
+            ("Defect Management", data.get('defect_management')),
+            ("Communication Plan", data.get('communication_plan')),
+            ("Approval Process", data.get('approval_process')),
+            ("Sign-off Authorities", data.get('sign_off_authorities')),
+        ]
+
+        for section, description in sections:
+            sheet.append([section, description])
+
+        for col in sheet.columns:
+            max_length = 0
+            column = col[0].column_letter
+
+            for cell in col:
+                try:
+                    if cell.value:
+                        max_length = max(max_length, len(str(cell.value)))
+                except:
+                    pass
+
+            adjusted_width = (max_length + 2)
+            sheet.column_dimensions[column].width = adjusted_width
+
+            for cell in col:
+                cell.alignment = Alignment(wrap_text=True)
+                if cell.value:
+                    cell.border = border_style
+
+        current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
+        media_root = settings.MEDIA_ROOT
+        download_path = os.path.join(media_root, 'download')
+        os.makedirs(download_path, exist_ok=True)  # Ensure the folder exists
+
+        file_name = f'testplan-{current_time}.xlsx'
+        file_path = os.path.join(download_path, file_name)
+
+        # Save the workbook to the file path
+        workbook.save(file_path)
+
+        # Respond with the file location or success message
+        return Response({
+            'message': 'File has been successfully saved.',
+            'file_path': file_path,
+        })
+
+# handle Testcase [list/create]
+# Created by    : Nantha
+# Created date  : 26/11/2024
+# updated date  : 05/12/2024
 
 
-@api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
-def testcoverage_list(request):
-
-    if request.method == "GET":
-        testcover = TestCoverage.objects.all()
-        serializer = TestCoverageSerializer(testcover, many=True)
-        return Response(serializer.data)
-
-    elif request.method == "POST":
-        serializer = TestCoverageSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class TestCaseListView(generics.ListCreateAPIView):
+    queryset = TestCase.objects.all()
+    serializer_class = TestCaseSerializer
+    permission_classes = [IsAuthenticated]\
 
 
-@api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
-def bugreport_list(request):
+    def list(self, request, *args, **kwargs):
+        if 'export' in request.query_params:
+            return self.export_file(request, *args, **kwargs)
 
-    if request.method == "GET":
-        bugreport = BugReport.objects.all()
-        serializer = BugReportSerializer(bugreport, many=True)
-        return Response(serializer.data)
+        return super().list(request, *args, **kwargs)
 
-    elif request.method == "POST":
-        serializer = BugReportSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def export_file(self, request, pk=None, *args, **kwargs):
+        project_id = pk
+        project_name = Project.objects.filter(id=project_id).values_list(
+            'name', flat=True).first() if project_id else None
+
+        if not project_id:
+            return Response({"detail": "Project ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        test_cases = TestCase.objects.filter(project_id=pk)
+        if not test_cases.exists():
+            return Response({"detail": "No test cases found for this project"}, status=status.HTTP_404_NOT_FOUND)
+
+        mapped_ids = {test_case.testcaseID: f"TC_{idx:04d}" for idx, test_case in enumerate(test_cases, start=1)}
+        
+        wb = openpyxl.Workbook()
+        sheet = wb.active
+        assert sheet is not None, "Failed"
+
+        sheet.title = "Test Cases"
+
+        headers = ["S.no", "Test Case ID", "Description", "Pre-conditions",
+                   "Test Steps", "Expected Results", "Actual Result", "Status"]
+        sheet.append(headers)
+
+        wrap_columns = ["Description", "Pre-conditions",
+                        "Test Steps", "Expected Results", "Actual Result"]
+
+        for cell in sheet[1]:
+            cell.fill = header_fill
+            cell.font = header_font
+            cell.alignment = header_alignment
+            cell.border = border_style
+
+        column_widths = [6, 15, 50, 50, 50, 50, 50, 15]
+        for i, width in enumerate(column_widths, start=1):
+            col_letter = get_column_letter(i)
+            sheet.column_dimensions[col_letter].width = width
+
+        wrap_columns = {"C", "D", "E", "F", "G"}
+
+        for idx, test_case in enumerate(test_cases, start=1):
+            row_data = [
+                idx,  # Serial number
+                # test_case.testcaseID,
+                mapped_ids[test_case.testcaseID],
+                test_case.description,
+                test_case.preconditions,
+                test_case.test_steps,
+                test_case.expected_result,
+                test_case.actual_result,
+                test_case.status
+            ]
+            sheet.append(row_data)
+
+            for col_idx, cell in enumerate(sheet[idx + 1], start=1):
+                cell.border = border_style
+                if cell.column_letter in wrap_columns:
+                    cell.alignment = cell_alignment_wrap
+                else:
+                    cell.alignment = cell_alignment_center if col_idx <= 2 else Alignment(
+                        horizontal="left")
+
+        current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
+        media_root = settings.MEDIA_ROOT
+        download_path = os.path.join(media_root, 'download')
+        os.makedirs(download_path, exist_ok=True)
+
+        file_name = f'{project_name}_testcase-{current_time}.xlsx'
+        file_path = os.path.join(download_path, file_name)
+
+        wb.save(file_path)
+
+        return Response({
+            'message': 'File has been successfully saved.',
+            'file_path': file_path,
+        })
 
 
-@api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
-def testreport_list(request):
+# handle Testcase detail [retrieve-update-destory]
+# Created by      :   Nantha
+# Created date    :   26/11/2024
 
-    if request.method == "GET":
-        testreports = TestReport.objects.all()
-        serializer = TestReportSerializer(testreports, many=True)
-        return Response(serializer.data)
 
-    elif request.method == "POST":
-        serializer = TestReportSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class TestCaseDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = TestCase.objects.all()
+    serializer_class = TestCaseSerializer
+    permission_classes = [IsAuthenticated]
+
+
+# handle Testcoverage [list/create]
+# Created by      :   Nantha
+# Created date    :   26/11/2024
+
+class TestCoverageListView(generics.ListCreateAPIView):
+    queryset = TestCoverage.objects.all()
+    serializer_class = TestCoverageSerializer
+    permission_classes = [IsAuthenticated]
+
+
+# handle Testcoverage detail [retrieve-update-destory]
+# Created by      :   Nantha
+# Created date    :   09/12/2024
+
+
+class TestCoverageDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = TestCoverage.objects.all()
+    serializer_class = TestCoverageSerializer
+    permission_classes = [IsAuthenticated]
+
+# handle Bugreport [list/create]
+# Created by      :   Nantha
+# Created date    :   04/12/2024
+
+
+class BugreportListView(generics.ListCreateAPIView):
+    queryset = BugReport.objects.all()
+    serializer_class = BugReportSerializer
+    permission_classes = [IsAuthenticated]
+
+# handle Testreport [list/create]
+# Created by      :   Nantha
+# Created date    :   04/12/2024
+
+
+class TestreportListView(generics.ListCreateAPIView):
+    queryset = TestReport.objects.all()
+    serializer_class = TestReportSerializer
+    permission_classes = [IsAuthenticated]

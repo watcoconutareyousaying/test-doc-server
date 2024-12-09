@@ -1,4 +1,7 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from django.db import transaction
+
 
 from api.models import Project, TestPlan, TestCase, TestCoverage, BugReport, TestReport
 
@@ -11,7 +14,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class TestPlanSerializer(serializers.ModelSerializer):
-    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    project = serializers.PrimaryKeyRelatedField(
+        queryset=Project.objects.all())
 
     class Meta:
         model = TestPlan
@@ -48,7 +52,8 @@ class TestPlanSerializer(serializers.ModelSerializer):
 
 
 class TestCaseSerializer(serializers.ModelSerializer):
-    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    project = serializers.PrimaryKeyRelatedField(
+        queryset=Project.objects.all())
 
     class Meta:
         model = TestCase
@@ -67,16 +72,39 @@ class TestCaseSerializer(serializers.ModelSerializer):
         )
         extra_kwargs = {"testcaseID": {"required": False}}
 
-        def create(self, validated_data):
-            # Ensure the `testcaseID` is generated when creating the instance
-            testcase = TestCase(**validated_data)
-            testcase.save()
-            return testcase
+    def create(self, validated_data):
+        project = validated_data.get("project")
+
+        # Use a transaction to ensure atomicity
+        with transaction.atomic():
+            # Get the last TestCase for the same project
+            last_testcase = TestCase.objects.filter(
+                project=project).order_by("-id").first()
+            last_id = int(last_testcase.testcaseID.split("_")
+                          [1]) if last_testcase else 0
+            next_id = last_id + 1
+            new_testcaseID = f"TC_{next_id:04d}"
+
+            # Ensure uniqueness of testcaseID
+            while TestCase.objects.filter(testcaseID=new_testcaseID).exists():
+                next_id += 1
+                new_testcaseID = f"TC_{next_id:04d}"
+
+            validated_data["testcaseID"] = validated_data.get(
+                "testcaseID", new_testcaseID)
+
+        # Create the TestCase object
+        return TestCase.objects.create(**validated_data)
+
+
+class TestCaseIDSerializer(serializers.Serializer):
+    testcaseID = serializers.CharField(max_length=50)
 
 
 class TestCoverageSerializer(serializers.ModelSerializer):
-    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
-    test_cases = serializers.SerializerMethodField()
+    project = serializers.PrimaryKeyRelatedField(
+        queryset=Project.objects.all())
+    test_cases = TestCaseIDSerializer(many=True)
 
     class Meta:
         model = TestCoverage
@@ -90,40 +118,43 @@ class TestCoverageSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+        extra_kwargs = {
+            "feature_id": {"required": False},
+            "status": {"required": False},
+        }
 
-    def get_test_cases(self, obj):
-        return [test_case.testcaseID for test_case in obj.test_cases.all()]
+    def update_status(self, test_cases):
+        all_pass = all(test_case.status ==
+                       TestCase.StatusChoices.PASS for test_case in test_cases)
+        if all_pass:
+            return TestCoverage.StatusChoices.COVERED
+        return TestCoverage.StatusChoices.NOT_COVERED
 
     def create(self, validated_data):
-        test_cases_data = validated_data.pop("test_cases")
+        project = validated_data["project"]
+        test_cases_data = validated_data.pop('test_cases')
+
         test_coverage = TestCoverage.objects.create(**validated_data)
-        for test_case_data in test_cases_data:
-            test_case = TestCase.objects.get(testcaseID=test_case_data["testcaseID"])
-            test_coverage.test_cases.add(test_case)
-        test_coverage.update_status()  # Update the status based on the test cases
+
+        for testcase_data in test_cases_data:
+            testcase_instance = TestCase.objects.get(
+                project=project,
+                testcaseID=testcase_data['testcaseID']
+            )
+            test_coverage.test_cases.add(testcase_instance)
+
+        new_status = self.update_status(
+            test_coverage.test_cases.all())
+        test_coverage.status = new_status
+        test_coverage.save()
+
         return test_coverage
-
-    def update(self, instance, validated_data):
-        test_cases_data = validated_data.pop("test_cases", [])
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        instance.save()
-
-        # Update test cases
-        if test_cases_data:
-            instance.test_cases.clear()  # Clear the existing test cases
-            for test_case_data in test_cases_data:
-                test_case = TestCase.objects.get(
-                    testcaseID=test_case_data["testcaseID"]
-                )
-                instance.test_cases.add(test_case)
-
-        instance.update_status()  # Update status based on new test cases
-        return instance
 
 
 class BugReportSerializer(serializers.ModelSerializer):
-    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    project = serializers.PrimaryKeyRelatedField(
+        queryset=Project.objects.all())
+    evidence = serializers.FileField(required=False, allow_null=True)
 
     class Meta:
         model = BugReport
@@ -134,6 +165,7 @@ class BugReportSerializer(serializers.ModelSerializer):
             "steps_to_reproduce",
             "severity",
             "status",
+            'evidence',
             "created_at",
             "updated_at",
         )
@@ -141,7 +173,8 @@ class BugReportSerializer(serializers.ModelSerializer):
 
 
 class TestReportSerializer(serializers.ModelSerializer):
-    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    project = serializers.PrimaryKeyRelatedField(
+        queryset=Project.objects.all())
 
     total_test_cases = serializers.IntegerField(read_only=True)
     passed_test_cases = serializers.IntegerField(read_only=True)
@@ -153,6 +186,7 @@ class TestReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestReport
         fields = (
+            "id",
             "project",
             "total_test_cases",
             "passed_test_cases",
@@ -183,7 +217,8 @@ class TestReportSerializer(serializers.ModelSerializer):
         }
 
         observations = (
-            f"Out of {total_test_cases} test cases, {passed_test_cases} passed and "
+            f"Out of {total_test_cases} test cases, {
+                passed_test_cases} passed and "
             f"{failed_test_cases} failed. Found {len(bugs)} bugs."
         )
         recommendations = "Fix all critical issues before proceeding with the release."

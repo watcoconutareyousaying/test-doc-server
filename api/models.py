@@ -147,13 +147,6 @@ class TestCoverage(models.Model):
                 self.feature_id = new_id
         super().save(*args, **kwargs)
 
-    def update_status(self):
-        if all(test_case.status == "Pass" for test_case in self.test_cases.all()):
-            self.status = self.StatusChoices.COVERED
-        else:
-            self.status = self.StatusChoices.NOT_COVERED
-        self.save()
-
 
 class BugReport(models.Model):
     class StatusChoices(models.TextChoices):

@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "28031bc8-e113-4fc8-86b5-be71428fca0d",
+		"_postman_id": "3c2154e2-d023-417c-bf3e-d1281293cbeb",
 		"name": "Test Documentation",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32733850"
+		"_exporter_id": "40309672"
 	},
 	"item": [
 		{
@@ -638,7 +638,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"project\": 2,\r\n  \"description\": \"Test the assembly and functionality of the MacBook to ensure proper assembly and performance of all components.\",\r\n  \"preconditions\": \"All MacBook components (display, keyboard, motherboard, battery, trackpad, etc.) must be available and in working condition.\",\r\n  \"test_steps\": \"1. Verify all MacBook parts are correctly assembled. 2. Power on the MacBook. 3. Test the functionality of the keyboard, trackpad, display, and ports. 4. Check for any visible defects or malfunctions.\",\r\n  \"expected_result\": \"The MacBook should power on, with all components functioning correctly and no visible defects.\",\r\n  \"actual_result\": \"MacBook powered on successfully, all components (keyboard, trackpad, display, ports) are working as expected with no defects.\",\r\n  \"status\": \"Fail\"\r\n}",
+					"raw": "{\r\n  \"project\": 1,\r\n  \"description\": \"Test the assembly and functionality of the MacBook to ensure proper assembly and performance of all components.\",\r\n  \"preconditions\": \"All MacBook components (display, keyboard, motherboard, battery, trackpad, etc.) must be available and in working condition.\",\r\n  \"test_steps\": \"1. Verify all MacBook parts are correctly assembled. 2. Power on the MacBook. 3. Test the functionality of the keyboard, trackpad, display, and ports. 4. Check for any visible defects or malfunctions.\",\r\n  \"expected_result\": \"The MacBook should power on, with all components functioning correctly and no visible defects.\",\r\n  \"actual_result\": \"MacBook powered on successfully, all components (keyboard, trackpad, display, ports) are working as expected with no defects.\",\r\n  \"status\": \"Pass\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -836,7 +836,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"project\": 1,\r\n    \"feature_description\": \"Description based on mac-book product\",\r\n    \"test_cases\": [1, 2]\r\n}",
+					"raw": "{\r\n    \"project\": 1,\r\n    \"feature_description\": \"Passed test case.\",\r\n    \"test_cases\": [\r\n        {\r\n            \"testcaseID\": \"TC_0041\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0042\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0043\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0044\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0045\"\r\n        }\r\n    ]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -994,16 +994,6 @@
 					""
 				]
 			}
-		}
-	],
-	"variable": [
-		{
-			"key": "access",
-			"value": ""
-		},
-		{
-			"key": "refresh",
-			"value": ""
 		}
 	]
 }

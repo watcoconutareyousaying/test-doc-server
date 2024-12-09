@@ -5,6 +5,7 @@ from django.db import transaction
 
 from api.models import Project, TestPlan, TestCase, TestCoverage, BugReport, TestReport
 
+
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
@@ -70,34 +71,40 @@ class TestCaseSerializer(serializers.ModelSerializer):
             "updated_at",
         )
         extra_kwargs = {"testcaseID": {"required": False}}
-    
+
     def create(self, validated_data):
         project = validated_data.get("project")
-        
+
         # Use a transaction to ensure atomicity
         with transaction.atomic():
             # Get the last TestCase for the same project
-            last_testcase = TestCase.objects.filter(project=project).order_by("-id").first()
-            last_id = int(last_testcase.testcaseID.split("_")[1]) if last_testcase else 0
+            last_testcase = TestCase.objects.filter(
+                project=project).order_by("-id").first()
+            last_id = int(last_testcase.testcaseID.split("_")
+                          [1]) if last_testcase else 0
             next_id = last_id + 1
             new_testcaseID = f"TC_{next_id:04d}"
-            
+
             # Ensure uniqueness of testcaseID
             while TestCase.objects.filter(testcaseID=new_testcaseID).exists():
                 next_id += 1
                 new_testcaseID = f"TC_{next_id:04d}"
 
-            validated_data["testcaseID"] = validated_data.get("testcaseID", new_testcaseID)
-        
+            validated_data["testcaseID"] = validated_data.get(
+                "testcaseID", new_testcaseID)
+
         # Create the TestCase object
         return TestCase.objects.create(**validated_data)
+
+
+class TestCaseIDSerializer(serializers.Serializer):
+    testcaseID = serializers.CharField(max_length=50)
+
 
 class TestCoverageSerializer(serializers.ModelSerializer):
     project = serializers.PrimaryKeyRelatedField(
         queryset=Project.objects.all())
-    # test_cases = serializers.SerializerMethodField()
-    # test_cases = serializers.ListField(child=serializers.CharField(), required=False)
-    test_cases = serializers.PrimaryKeyRelatedField(queryset=TestCase.objects.all(), many=True)
+    test_cases = TestCaseIDSerializer(many=True)
 
     class Meta:
         model = TestCoverage
@@ -116,26 +123,29 @@ class TestCoverageSerializer(serializers.ModelSerializer):
             "status": {"required": False},
         }
 
-    def get_test_cases(self, obj):
-        test_cases = obj.test_cases.all()
-        return [test_case.testcaseID for test_case in test_cases]
+    def update_status(self, test_cases):
+        all_pass = all(test_case.status ==
+                       TestCase.StatusChoices.PASS for test_case in test_cases)
+        if all_pass:
+            return TestCoverage.StatusChoices.COVERED
+        return TestCoverage.StatusChoices.NOT_COVERED
 
     def create(self, validated_data):
         project = validated_data["project"]
-        test_case_ids = validated_data.pop('test_cases', [])
+        test_cases_data = validated_data.pop('test_cases')
 
-        test_cases = TestCase.objects.filter(testcaseID__in=test_case_ids, project=project)
-        if test_cases.count() != len(test_case_ids):
-            raise serializers.ValidationError(
-                "Some test cases do not belong to the specified project."
-            )
-        print("matching test cases :", test_cases)
-
-        # Create the TestCoverage object
         test_coverage = TestCoverage.objects.create(**validated_data)
 
-        # Associate the TestCase instances with the TestCoverage object
-        test_coverage.test_cases.set(test_cases)
+        for testcase_data in test_cases_data:
+            testcase_instance = TestCase.objects.get(
+                project=project,
+                testcaseID=testcase_data['testcaseID']
+            )
+            test_coverage.test_cases.add(testcase_instance)
+
+        new_status = self.update_status(
+            test_coverage.test_cases.all())
+        test_coverage.status = new_status
         test_coverage.save()
 
         return test_coverage

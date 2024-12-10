@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "3c2154e2-d023-417c-bf3e-d1281293cbeb",
+		"_postman_id": "deea0673-c58a-4e4c-935b-4ed784e7ea67",
 		"name": "Test Documentation",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "40309672"
+		"_exporter_id": "32733850"
 	},
 	"item": [
 		{
@@ -182,7 +182,7 @@
 					"formdata": [
 						{
 							"key": "name",
-							"value": "ios",
+							"value": "windows",
 							"type": "text"
 						}
 					]
@@ -372,7 +372,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"project\": 1,\r\n  \"objective\": \"To ensure quality for the new product launch\",\r\n  \"scope_in\": \"Functional testing, Performance testing\",\r\n  \"scope_out\": \"Security testing, Usability testing\",\r\n  \"test_levels\": \"Unit testing, Integration testing\",\r\n  \"types_of_testing\": \"Manual testing, Automated testing\",\r\n  \"environment_details\": \"Staging environment with replica data\",\r\n  \"test_data\": \"Sample test data for edge cases\",\r\n  \"test_manager\": \"manager\",\r\n  \"test_leads\": \"lead1, lead2\",\r\n  \"testers\": \"tester1, tester2\",\r\n  \"developers\": \"dev1, dev2\",\r\n  \"business_analysts\": \"ba1, ba2\",\r\n  \"milestones\": \"Phase 1: Planning, Phase 2: Execution\",\r\n  \"deadlines\": \"2025-01-01\",\r\n  \"dependencies\": \"Final API readiness, Database migration\",\r\n  \"deliverables\": \"Test reports, Defect logs\",\r\n  \"entry_criteria\": \"All modules developed, Test data available\",\r\n  \"exit_criteria\": \"All test cases executed, Critical defects resolved\",\r\n  \"risks\": \"Unavailability of testing tools, Resource constraints\",\r\n  \"mitigation_strategies\": \"Backup tools, Additional hires\",\r\n  \"defect_management\": \"Using Jira for defect tracking\",\r\n  \"communication_plan\": \"Weekly meetings, Daily standups\",\r\n  \"approval_process\": \"Sign-off from project stakeholders\",\r\n  \"sign_off_authorities\": \"manager, director\"\r\n}",
+					"raw": "{\r\n  \"project\": 2,\r\n  \"objective\": \"To ensure quality for the new product launch\",\r\n  \"scope_in\": \"Functional testing, Performance testing\",\r\n  \"scope_out\": \"Security testing, Usability testing\",\r\n  \"test_levels\": \"Unit testing, Integration testing\",\r\n  \"types_of_testing\": \"Manual testing, Automated testing\",\r\n  \"environment_details\": \"Staging environment with replica data\",\r\n  \"test_data\": \"Sample test data for edge cases\",\r\n  \"test_manager\": \"manager\",\r\n  \"test_leads\": \"lead1, lead2\",\r\n  \"testers\": \"tester1, tester2\",\r\n  \"developers\": \"dev1, dev2\",\r\n  \"business_analysts\": \"ba1, ba2\",\r\n  \"milestones\": \"Phase 1: Planning, Phase 2: Execution\",\r\n  \"deadlines\": \"2025-01-01\",\r\n  \"dependencies\": \"Final API readiness, Database migration\",\r\n  \"deliverables\": \"Test reports, Defect logs\",\r\n  \"entry_criteria\": \"All modules developed, Test data available\",\r\n  \"exit_criteria\": \"All test cases executed, Critical defects resolved\",\r\n  \"risks\": \"Unavailability of testing tools, Resource constraints\",\r\n  \"mitigation_strategies\": \"Backup tools, Additional hires\",\r\n  \"defect_management\": \"Using Jira for defect tracking\",\r\n  \"communication_plan\": \"Weekly meetings, Daily standups\",\r\n  \"approval_process\": \"Sign-off from project stakeholders\",\r\n  \"sign_off_authorities\": \"manager, director\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -588,7 +588,7 @@
 			"response": []
 		},
 		{
-			"name": "TestCases",
+			"name": "Create TestCase",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -600,8 +600,17 @@
 						}
 					]
 				},
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"project\": 1,\r\n  \"description\": \"Test the assembly and functionality of the MacBook to ensure proper assembly and performance of all components.\",\r\n  \"preconditions\": \"All MacBook components (display, keyboard, motherboard, battery, trackpad, etc.) must be available and in working condition.\",\r\n  \"test_steps\": \"1. Verify all MacBook parts are correctly assembled. 2. Power on the MacBook. 3. Test the functionality of the keyboard, trackpad, display, and ports. 4. Check for any visible defects or malfunctions.\",\r\n  \"expected_result\": \"The MacBook should power on, with all components functioning correctly and no visible defects.\",\r\n  \"actual_result\": \"MacBook powered on successfully, all components (keyboard, trackpad, display, ports) are working as expected with no defects.\",\r\n  \"status\": \"Fail\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/testcases/",
 					"protocol": "http",
@@ -622,7 +631,7 @@
 			"response": []
 		},
 		{
-			"name": "Create TestCase",
+			"name": "TestCases",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -634,17 +643,8 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"project\": 1,\r\n  \"description\": \"Test the assembly and functionality of the MacBook to ensure proper assembly and performance of all components.\",\r\n  \"preconditions\": \"All MacBook components (display, keyboard, motherboard, battery, trackpad, etc.) must be available and in working condition.\",\r\n  \"test_steps\": \"1. Verify all MacBook parts are correctly assembled. 2. Power on the MacBook. 3. Test the functionality of the keyboard, trackpad, display, and ports. 4. Check for any visible defects or malfunctions.\",\r\n  \"expected_result\": \"The MacBook should power on, with all components functioning correctly and no visible defects.\",\r\n  \"actual_result\": \"MacBook powered on successfully, all components (keyboard, trackpad, display, ports) are working as expected with no defects.\",\r\n  \"status\": \"Pass\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/testcases/",
 					"protocol": "http",
@@ -836,7 +836,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"project\": 1,\r\n    \"feature_description\": \"Passed test case.\",\r\n    \"test_cases\": [\r\n        {\r\n            \"testcaseID\": \"TC_0041\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0042\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0043\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0044\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0045\"\r\n        }\r\n    ]\r\n}\r\n",
+					"raw": "{\r\n    \"project\": 1,\r\n    \"feature_description\": \"Passed test case.\",\r\n    \"test_cases\": [\r\n        {\r\n            \"testcaseID\": \"TC_0001\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0002\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0003\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0004\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0005\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0006\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0007\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0008\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0009\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0010\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0011\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0012\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0013\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0014\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0015\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0016\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0017\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0018\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0019\"\r\n        },\r\n        {\r\n            \"testcaseID\": \"TC_0020\"\r\n        }\r\n    ]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -897,7 +897,7 @@
 			"response": []
 		},
 		{
-			"name": "Create Bug",
+			"name": "Create Defect",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -912,16 +912,57 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"project\": 1,\r\n  \"summary\": \"Defective screen detected during assembly.\",\r\n  \"steps_to_reproduce\": \"1. Begin assembly process. 2. Attach screen to chassis. 3. Conduct quality check. 4. Notice unresponsive pixels on the screen.\",\r\n  \"severity\": \"High\",\r\n  \"status\": \"Open\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "project",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "summary",
+							"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+							"type": "text"
+						},
+						{
+							"key": "steps_to_reproduce",
+							"value": "1. Begin assembly process. 2. Attach screen to chassis. 3. Conduct quality check. 4. Notice unresponsive pixels on the screen.",
+							"type": "text"
+						},
+						{
+							"key": "severity",
+							"value": "High",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "In Progress",
+							"type": "text"
+						},
+						{
+							"key": "evidence",
+							"type": "file",
+							"src": "/C:/Users/FS-098/Downloads/pdf-155498_1920.png"
+						},
+						{
+							"key": "defect_detected_date",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "defect_fixed_date",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "reopen_defect_date",
+							"value": "",
+							"type": "text"
 						}
-					}
+					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/bugreport/",
+					"raw": "http://127.0.0.1:8000/api/defect-report/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -932,7 +973,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"bugreport",
+						"defect-report",
 						""
 					]
 				}
@@ -940,7 +981,7 @@
 			"response": []
 		},
 		{
-			"name": "Bug List",
+			"name": "Defect List",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -955,7 +996,117 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/bugreport/",
+					"raw": "http://127.0.0.1:8000/api/defect-report/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"defect-report",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Export Defect List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/2/defect-report/?export=true",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"2",
+						"defect-report",
+						""
+					],
+					"query": [
+						{
+							"key": "export",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Bug",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "project",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "summary",
+							"value": "Defective screen detected during assembly",
+							"type": "text"
+						},
+						{
+							"key": "steps_to_reproduce",
+							"value": "1. Begin assembly process. 2. Attach screen to chassis. 3. Conduct quality check. 4. Notice unresponsive pixels on the screen.",
+							"type": "text"
+						},
+						{
+							"key": "severity",
+							"value": "High",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "In Progress",
+							"type": "text"
+						},
+						{
+							"key": "evidence",
+							"type": "file",
+							"src": "/C:/Users/FS-098/Downloads/Untitled.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/bugreport/1/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -967,7 +1118,127 @@
 					"path": [
 						"api",
 						"bugreport",
+						"1",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Test Report",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "project",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/test-reports/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"test-reports",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Reports List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/test-reports/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"test-reports",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Export Test Report",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/1/test-reports/?export=true",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"1",
+						"test-reports",
+						""
+					],
+					"query": [
+						{
+							"key": "export",
+							"value": "true"
+						}
 					]
 				}
 			},

@@ -1,4 +1,5 @@
 import os
+import datetime
 from django.db import models, transaction
 # from django.contrib.auth.models import AbstractUser
 from account.models import UserData
@@ -148,7 +149,7 @@ class TestCoverage(models.Model):
         super().save(*args, **kwargs)
 
 
-class BugReport(models.Model):
+class DefectReport(models.Model):
     class StatusChoices(models.TextChoices):
         OPEN = "Open"
         CLOSED = "Closed"
@@ -162,7 +163,7 @@ class BugReport(models.Model):
         CRITICAL = "Critical"
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    bug_id = models.CharField(max_length=10)
+    defect_id = models.CharField(max_length=30, unique=True)
     summary = models.TextField()
     steps_to_reproduce = models.TextField()
     severity = models.CharField(max_length=10, choices=SeverityChoices)
@@ -170,21 +171,37 @@ class BugReport(models.Model):
         max_length=15, choices=StatusChoices, default=StatusChoices.OPEN
     )
     evidence = models.FileField(
-        upload_to='bug_reports/evidence/', null=True, blank=True)
+        upload_to='defect_reports/evidence/', null=True, blank=True)
+    defect_detected_date = models.DateTimeField(null=True, blank=True)
+    defect_fixed_date = models.DateTimeField(null=True, blank=True)
+    reopen_defect_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        if not self.bug_id:
-            # last_bug = BugReport.objects.all().order_by("id").last()
-            last_bug = BugReport.objects.filter(
+        if not self.defect_id:
+            last_defect = DefectReport.objects.filter(
                 project=self.project).order_by("-id").first()
-            if last_bug:
-                last_id = int(last_bug.bug_id[3:])
-                new_id = f"BUG{last_id + 1:04d}"
+
+            if last_defect:
+                if last_defect.defect_id.startswith("DEFECT_"):
+                    last_id = int(last_defect.defect_id[7:])
+                    new_id = f"DEFECT_{last_id + 1:04d}"
+                else:
+                    new_id = "DEFECT_0001"
             else:
-                new_id = "BUG0001"
-            self.bug_id = new_id
+                last_id = 0
+                new_id = "DEFECT_0001"
+
+            while DefectReport.objects.filter(defect_id=new_id).exists():
+                last_id += 1
+                new_id = f"DEFECT_{last_id + 1:04d}"
+
+            self.defect_id = new_id
+            
+            if self.status == self.StatusChoices.OPEN and not self.defect_detected_date:
+                self.defect_detected_date = datetime.datetime.now()
+
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -194,10 +211,10 @@ class BugReport(models.Model):
         super().delete(*args, **kwargs)
 
     class Meta:
-        db_table = "bugreport"
+        db_table = "defect_report"
 
     def __str__(self):
-        return f"{self.bug_id} - {self.project.name}"
+        return f"{self.defect_id} - {self.project.name}"
 
 
 class TestReport(models.Model):
@@ -207,7 +224,7 @@ class TestReport(models.Model):
     total_test_cases = models.IntegerField()
     passed_test_cases = models.IntegerField()
     failed_test_cases = models.IntegerField()
-    bugs_summary = models.JSONField()
+    defect_summary = models.JSONField()
     observations = models.TextField()
     recommendations = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

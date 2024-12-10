@@ -81,16 +81,26 @@ Run the development server:
 python manage.py runserver
 ```
 
-
-## Usage
-
-Explain how to test the project and give some example.
-
-```bash
-Example
-```
-
 ## Technologies
 
 _Name the technologies used in the project._ 
 * [Django Rest Framework](https://www.django-rest-framework.org/) - Framework Used.
+* [django-extensions](https://django-extensions.readthedocs.io/en/latest/installation_instructions.html) - install graph model generation.
+
+### Generate a graph model using this command
+```bash
+python manage.py graph_models -a -g -o api_models.dot
+```
+
+#### The graph_models command has several options to customize the output:
+
+
+- ```-a``` or ```--all-applications``` : Generate the graph for all applications in INSTALLED_APPS.
+
+- ```-g``` or ```--group-models``` : Group models by application.
+
+- ```-o``` or ```--output``` : Specify the output file name and format (e.g., png, jpg).
+
+- ```-l``` or ```--layout``` : Choose a GraphViz layout algorithm (e.g., circo, dot, fdp).
+
+- ```-t``` or ```--theme``` : Select a theme for the graph (e.g., original, django2018).

@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 from django.db import transaction
 
 
-from api.models import Project, TestPlan, TestCase, TestCoverage, BugReport, TestReport
+from api.models import Project, TestPlan, TestCase, TestCoverage, DefectReport, TestReport
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -49,6 +49,7 @@ class TestPlanSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+        read_only_fields = ["created_at", "updated_at"]
 
 
 class TestCaseSerializer(serializers.ModelSerializer):
@@ -151,25 +152,43 @@ class TestCoverageSerializer(serializers.ModelSerializer):
         return test_coverage
 
 
-class BugReportSerializer(serializers.ModelSerializer):
+class DefectReportSerializer(serializers.ModelSerializer):
     project = serializers.PrimaryKeyRelatedField(
         queryset=Project.objects.all())
     evidence = serializers.FileField(required=False, allow_null=True)
 
     class Meta:
-        model = BugReport
+        model = DefectReport
         fields = (
             "project",
-            "bug_id",
+            "defect_id",
             "summary",
             "steps_to_reproduce",
             "severity",
             "status",
             'evidence',
+            'defect_detected_date',
+            'defect_fixed_date',
+            'reopen_defect_date',
             "created_at",
             "updated_at",
         )
-        read_only_fields = ["bug_id", "created_at", "updated_at"]
+        read_only_fields = ["defect_id", "created_at", "updated_at",
+                            "defect_detected_date", "defect_fixed_date", "reopen_defect_date"]
+
+        def validate_status(self, value):
+            defect_report = getattr(self, 'instance', None)
+
+            if defect_report:
+                if value == DefectReport.StatusChoices.FIXED and not defect_report.defect_fixed_date:
+                    raise serializers.ValidationError(
+                        "defect_fixed_date must be set when status is 'Fixed'")
+
+                if value == DefectReport.StatusChoices.OPEN and defect_report.defect_fixed_date and not defect_report.reopen_defect_date:
+                    raise serializers.ValidationError(
+                        "reopen_defect_date must be set when reopening a defect")
+
+            return value
 
 
 class TestReportSerializer(serializers.ModelSerializer):
@@ -179,7 +198,7 @@ class TestReportSerializer(serializers.ModelSerializer):
     total_test_cases = serializers.IntegerField(read_only=True)
     passed_test_cases = serializers.IntegerField(read_only=True)
     failed_test_cases = serializers.IntegerField(read_only=True)
-    bugs_summary = serializers.JSONField(read_only=True)
+    defect_summary = serializers.JSONField(read_only=True)
     observations = serializers.CharField(read_only=True)
     recommendations = serializers.CharField(read_only=True)
 
@@ -191,7 +210,7 @@ class TestReportSerializer(serializers.ModelSerializer):
             "total_test_cases",
             "passed_test_cases",
             "failed_test_cases",
-            "bugs_summary",
+            "defect_summary",
             "observations",
             "recommendations",
             "created_at",
@@ -210,16 +229,16 @@ class TestReportSerializer(serializers.ModelSerializer):
             status=TestCase.StatusChoices.FAIL
         ).count()
 
-        bugs = BugReport.objects.filter(project=project)
-        bugs_summary = {
-            severity: bugs.filter(severity=severity).count()
-            for severity in BugReport.SeverityChoices.values
+        defects = DefectReport.objects.filter(project=project)
+        defect_summary = {
+            severity: defects.filter(severity=severity).count()
+            for severity in DefectReport.SeverityChoices.values
         }
 
         observations = (
             f"Out of {total_test_cases} test cases, {
                 passed_test_cases} passed and "
-            f"{failed_test_cases} failed. Found {len(bugs)} bugs."
+            f"{failed_test_cases} failed. Found {len(defects)} defects."
         )
         recommendations = "Fix all critical issues before proceeding with the release."
 
@@ -228,7 +247,7 @@ class TestReportSerializer(serializers.ModelSerializer):
                 "total_test_cases": total_test_cases,
                 "passed_test_cases": passed_test_cases,
                 "failed_test_cases": failed_test_cases,
-                "bugs_summary": bugs_summary,
+                "defect_summary": defect_summary,
                 "observations": observations,
                 "recommendations": recommendations,
             }

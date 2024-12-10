@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.forms import ValidationError
 from django.utils.timezone import localtime
 
-from api.models import Project, TestPlan, TestCase, TestCoverage, BugReport, TestReport
+from api.models import Project, TestPlan, TestCase, TestCoverage, DefectReport, TestReport
 
 
 @admin.register(Project)
@@ -117,10 +117,10 @@ class TestCoverageAdmin(admin.ModelAdmin):
         return "-"
 
 
-@admin.register(BugReport)
+@admin.register(DefectReport)
 class BugReportAdmin(admin.ModelAdmin):
     list_display = (
-        "bug_id",
+        "defect_id",
         "project",
         "status",
         "severity",
@@ -128,7 +128,7 @@ class BugReportAdmin(admin.ModelAdmin):
         "formatted_created_at",
         "formatted_updated_at",
     )
-    readonly_fields = ("bug_id",)
+    readonly_fields = ("defect_id",)
 
     def formatted_created_at(self, obj):
         return self.format_datetime(obj.created_at)
@@ -158,6 +158,7 @@ class TestReportAdmin(admin.ModelAdmin):
         "formatted_created_at",
         "formatted_updated_at",
     )
+    readonly_fields = ("total_test_cases","passed_test_cases", "failed_test_cases")
 
     def formatted_created_at(self, obj):
         return self.format_datetime(obj.created_at)

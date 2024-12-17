@@ -10,9 +10,13 @@ from rest_framework import generics
 from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 from typing import Dict, Optional, cast
+from rest_framework.views import APIView
+from django.db.models import Count
+from django.utils.timezone import now
+from django.db.models.functions import TruncDate
 
 from server import settings
-from api.models import Project, TestPlan, TestCase, TestCoverage, DefectReport, TestReport
+from api.models import Project, TestPlan, TestCase, TestCoverage, DefectReport, TestReport, TestCaseStatusHistory
 from api.serializers import (
     ProjectSerializer,
     TestPlanSerializer,
@@ -20,6 +24,7 @@ from api.serializers import (
     TestCoverageSerializer,
     DefectReportSerializer,
     TestReportSerializer,
+    TestCaseStatusHistorySerializer
 )
 
 # tools for excel sheet
@@ -529,3 +534,50 @@ class TestreportListView(generics.ListCreateAPIView):
             'message': 'File has been successfully saved.',
             'file_path': file_path,
         })
+
+
+class TestCaseStatusHistoryView(generics.ListCreateAPIView):
+    queryset = TestCaseStatusHistory.objects.all()
+    serializer_class = TestCaseStatusHistorySerializer
+
+    def create(self, request, project_id, *args, **kwargs):
+
+        test_cases = TestCase.objects.filter(project_id=project_id)
+
+        status_history = []
+        for testcase in test_cases:
+            status_history.append({
+                "testcase": testcase,
+                "status": testcase.status,
+                "recorded_at": now().date()
+            })
+
+        status_history_objects = TestCaseStatusHistory.objects.bulk_create(
+            [TestCaseStatusHistory(**data) for data in status_history]
+        )
+        serializer = self.get_serializer(status_history_objects, many=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def get(self, request, project_id, *args, **kwargs):
+        status_history = TestCaseStatusHistory.objects.filter(
+            testcase__project_id=project_id
+        )
+
+        status_summary = (status_history
+                          .annotate(day=TruncDate('recorded_at'))
+                          .values('day', 'status')
+                          .annotate(count=Count('status'))
+                          .order_by('day', 'status'))
+
+        summary = {}
+        for entry in status_summary:
+            day = entry['day'].strftime("%Y-%m-%d")
+            status = entry['status']
+            count = entry['count']
+
+            if day not in summary:
+                summary[day] = {"Pass": 0, "Fail": 0, "Pending": 0}
+
+            summary[day][status] = count
+
+        return Response(summary)

@@ -10,6 +10,7 @@ from api.views import (
     DefectReportListView,
     DefectReportDetailView,
     TestreportListView,
+    TestCaseStatusHistoryView
 )
 
 urlpatterns = [
@@ -27,6 +28,14 @@ urlpatterns = [
     path("test-reports/", TestreportListView.as_view(), name="test_reports"),
 
     path("<int:pk>/testcases/", TestCaseListView.as_view(), name="export_testcases"),
-    path("<int:pk>/defect-report/", DefectReportListView.as_view(), name="export_defect_report"),
-    path("<int:pk>/test-reports/", TestreportListView.as_view(), name="export_test_reports"),
+    path("<int:pk>/defect-report/", DefectReportListView.as_view(),
+         name="export_defect_report"),
+    path("<int:pk>/test-reports/", TestreportListView.as_view(),
+         name="export_test_reports"),
+
+    path("status-history/<int:project_id>/", TestCaseStatusHistoryView.as_view(),
+         name="status-history-list-create"),
+    path('<int:project_id>/testcase-summary/',
+         TestCaseStatusHistoryView.as_view(), name='testcase-status-history'),
+
 ]

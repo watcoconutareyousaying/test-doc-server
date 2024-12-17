@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 from django.db import transaction
 
 
-from api.models import Project, TestPlan, TestCase, TestCoverage, DefectReport, TestReport
+from api.models import Project, TestPlan, TestCase, TestCoverage, DefectReport, TestReport, TestCaseStatusHistory
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -253,3 +253,12 @@ class TestReportSerializer(serializers.ModelSerializer):
             }
         )
         return super().create(validated_data)
+
+
+class TestCaseStatusHistorySerializer(serializers.ModelSerializer):
+    testcase = serializers.PrimaryKeyRelatedField(
+        queryset=TestCase.objects.all())
+
+    class Meta:
+        model = TestCaseStatusHistory
+        fields = ("testcase", "status", "recorded_at")

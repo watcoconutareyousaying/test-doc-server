@@ -1,5 +1,6 @@
 import os
 import datetime
+from django.utils.timezone import now
 from django.db import models, transaction
 # from django.contrib.auth.models import AbstractUser
 from account.models import UserData
@@ -198,7 +199,7 @@ class DefectReport(models.Model):
                 new_id = f"DEFECT_{last_id + 1:04d}"
 
             self.defect_id = new_id
-            
+
             if self.status == self.StatusChoices.OPEN and not self.defect_detected_date:
                 self.defect_detected_date = datetime.datetime.now()
 
@@ -235,3 +236,19 @@ class TestReport(models.Model):
 
     def __str__(self):
         return f"Test Report for Project {self.project.name}"
+
+
+class TestCaseStatusHistory(models.Model):
+    testcase = models.ForeignKey(
+        TestCase, on_delete=models.CASCADE, related_name="status_history"
+    )
+    status = models.CharField(
+        max_length=10, choices=TestCase.StatusChoices.choices)
+    recorded_at = models.DateField(default=now)
+
+    class Meta:
+        db_table = "testcase_status"
+        unique_together = ("testcase", "recorded_at")
+
+    def __str__(self):
+        return f"{self.testcase.testcaseID}: {self.status} on {self.recorded_at}"

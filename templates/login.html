@@ -1,9 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
 <h1>Login</h1>
+
+<script>
+    const apiLoginUrl = "{% url 'token_obtain_pair' %}";
+</script>
+
 <form method="post" id="loginForm" onsubmit="loginUser(event)">
     {% csrf_token %}
     <label for="email">Email:</label><br>
@@ -15,36 +21,6 @@
     <button type="submit">Login</button>
     <p>Don't you have an account? <a href="{% url 'register' %}"> Create here</a></p>
 </form>
-<script>
-    async function loginUser(event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const data = {
-            email: formData.get("email"),
-            password: formData.get("password"),
-        };
 
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-        const response = await fetch("{% url 'token_obtain_pair' %}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            alert("Login successful!");
-            console.log("Token:", result);
-            localStorage.setItem("access_token", result.access);
-            localStorage.setItem("refresh_token", result.refresh)
-            window.location.href = "/";
-        } else {
-            alert("Login failed. Check your email or password.");
-        }
-    }
-</script>
+<script src="{% static 'js/login.js' %}"></script>
 {% endblock %}

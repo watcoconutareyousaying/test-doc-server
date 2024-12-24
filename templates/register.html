@@ -1,9 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Register{% endblock %}
 
 {% block content %}
 <h1>Register</h1>
+
+<script>
+    const apiRegisterUrl = "{% url 'api-register' %}";
+</script>
+
 <form id="registerForm" onsubmit="registerUser(event)">
     <label for="name">Name:</label><br>
     <input type="text" id="name" name="name" required><br><br>
@@ -17,35 +23,6 @@
     <button type="submit">Register</button>
     <p>Already have an account? <a href="{% url 'login' %}"> Login here</a></p>
 </form>
-<script>
-    async function registerUser(event) {
-        event.preventDefault();
 
-        const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-            const response = await fetch("{% url 'api-register' %}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                alert('Registration successful!');
-                console.log('User registered:', result);
-                window.location.href = "/account/login/"
-            } else {
-                const error = await response.json();
-                alert('Registration failed: ' + JSON.stringify(error));
-            }
-        } catch (err) {
-            console.error('Error:', err);
-            alert('An error occurred during registration.');
-        }
-    }
-</script>
+<script src="{% static 'js/register.js' %}"></script>
 {% endblock %}

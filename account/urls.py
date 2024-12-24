@@ -15,6 +15,6 @@ urlpatterns = [
 
     path('register/', RegisterTemplateView.as_view(), name='register'),
     path('login/', login_view, name='login'),
-    path('api/user-profile/', UserProfileView.as_view(), name='user-profile'),
+    path('user-profile/', UserProfileView.as_view(), name='user-profile'),
 
 ]

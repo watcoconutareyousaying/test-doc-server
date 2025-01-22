@@ -77,6 +77,16 @@ class TestPlanListView(generics.ListCreateAPIView):
     serializer_class = TestPlanSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        
+        user_projects = Project.objects.filter(created_by=user)
+        
+        project_id = self.request.query_params.get('project_id') # type: ignore
+        if project_id:
+            return TestPlan.objects.filter(project__id= project_id, project__in=user_projects)
+        return TestPlan.objects.filter(project__in=user_projects)
+
 # handle Testplan detail [retrive-update-destory/export]
 # Created date    :   26/11/2024
 # Updated date    :   04/12/2024
@@ -197,7 +207,16 @@ class TestCaseListView(generics.ListCreateAPIView):
     queryset = TestCase.objects.all()
     serializer_class = TestCaseSerializer
     permission_classes = [IsAuthenticated]\
-
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        user_projects = Project.objects.filter(created_by=user)
+        
+        project_id = self.request.query_params.get('project_id') # type: ignore
+        if project_id:
+            return TestCase.objects.filter(project__id= project_id, project__in=user_projects)
+        return TestCase.objects.filter(project__in=user_projects)
 
     def list(self, request, *args, **kwargs):
         if 'export' in request.query_params:
@@ -302,6 +321,16 @@ class TestCoverageListView(generics.ListCreateAPIView):
     serializer_class = TestCoverageSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        
+        user_projects = Project.objects.filter(created_by=user)
+        
+        project_id = self.request.query_params.get('project_id') # type: ignore
+        if project_id:
+            return TestCoverage.objects.filter(project__id= project_id, project__in=user_projects)
+        return TestCoverage.objects.filter(project__in=user_projects)
+    
     def create(self, request, *args, **kwargs):
         try:
             return super().create(request, *args, **kwargs)
@@ -330,6 +359,16 @@ class DefectReportListView(generics.ListCreateAPIView):
     serializer_class = DefectReportSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        
+        user_projects = Project.objects.filter(created_by=user)
+        
+        project_id = self.request.query_params.get('project_id') # type: ignore
+        if project_id:
+            return DefectReport.objects.filter(project__id= project_id, project__in=user_projects)
+        return DefectReport.objects.filter(project__in=user_projects)
+    
     def list(self, request, *args, **kwargs):
         if 'export' in request.query_params:
             return self.export_file(request, *args, **kwargs)
@@ -443,6 +482,16 @@ class TestreportListView(generics.ListCreateAPIView):
     queryset = TestReport.objects.all()
     serializer_class = TestReportSerializer
     permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        user_projects = Project.objects.filter(created_by=user)
+        
+        project_id = self.request.query_params.get('project_id') # type: ignore
+        if project_id:
+            return TestReport.objects.filter(project__id= project_id, project__in=user_projects)
+        return TestReport.objects.filter(project__in=user_projects)
 
     def list(self, request, *args, **kwargs):
         if 'export' in request.query_params:

@@ -4,8 +4,8 @@ POST http://localhost:8000/account/register/
 Content-Type: application/json
 
 {
-  "email": "windows@example.com",
-  "name": "Windows",
+  "name": "Alex",
+  "email": "alex@example.com",
   "password": "password"
 }
 

@@ -9,8 +9,8 @@ from api.models import Project, TestPlan, TestCase, TestCoverage, DefectReport, 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ("id", "name", "created_by")
-        read_only_fields = ["created_by"]
+        fields = ("id", "name", "created_by", "created_at", "updated_at")
+        read_only_fields = ["created_by", "created_at", "updated_at"]
 
 
 class TestPlanSerializer(serializers.ModelSerializer):
@@ -21,6 +21,7 @@ class TestPlanSerializer(serializers.ModelSerializer):
         model = TestPlan
         fields = (
             "id",
+            "name",
             "project",
             "objective",
             "scope_in",
@@ -60,6 +61,7 @@ class TestCaseSerializer(serializers.ModelSerializer):
         model = TestCase
         fields = (
             "id",
+            "name",
             "project",
             "testcaseID",
             "description",
@@ -111,6 +113,7 @@ class TestCoverageSerializer(serializers.ModelSerializer):
         model = TestCoverage
         fields = (
             "id",
+            "name",
             "project",
             "feature_id",
             "feature_description",
@@ -160,6 +163,7 @@ class DefectReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = DefectReport
         fields = (
+            "title",
             "project",
             "defect_id",
             "summary",
@@ -206,6 +210,7 @@ class TestReportSerializer(serializers.ModelSerializer):
         model = TestReport
         fields = (
             "id",
+            "name",
             "project",
             "total_test_cases",
             "passed_test_cases",

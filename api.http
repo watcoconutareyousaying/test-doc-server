@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
     "email": "admin@example.com",
-    "password": "admin"
+    "password": "Admin"
 }
 
 ### LOGOUT
@@ -66,13 +66,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://localhost:8000/api/testplans/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNDA3MDczLCJpYXQiOjE3MzM0MDM0NzMsImp0aSI6IjQyNDFkOTA0ODUwZjRkOTZhNjY5MjI0MjY0OWJlZTFiIiwidXNlcl9pZCI6MX0.FTh_AGxzvDXlISWIcBys_AGDawTXv1B9ENT7nwl6WDQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwMTIwODAxLCJpYXQiOjE3NDAxMTcyMDEsImp0aSI6ImNjMjZmYWI0YWUwYTQwMGZhNjg4YmRkNzFhODY0NDMwIiwidXNlcl9pZCI6MX0.m-wL9y36dqYjR3dP7ySiZwPUNAgnc6ujIfY_7M0eMkM
 
 ### CREATE TESTPLAN
 
 POST http://localhost:8000/api/testplans/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzMyNTA1LCJpYXQiOjE3MzI3Mjg5MDUsImp0aSI6ImIxYmNjOGZiMmJjZTRhY2M4YTM4YTdlOGExYTc4NzJjIiwidXNlcl9pZCI6MX0.CvR79G7UDDIepEhYsSnNbGS4_MVaR9-Y3OMaDAIWS_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODAxNDkxLCJpYXQiOjE3Mzk3OTc4OTEsImp0aSI6ImNlYmQ0MzA1YzY1YjQ4OWVhY2JmMDgxMDVmNzk5Zjk3IiwidXNlcl9pZCI6MX0.ONmFN7XeOizW64OVXPhlodUTjYb2dX8Ib-kJsxrb0-M
 
 {
   "project": 1,
@@ -104,9 +104,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### TESTPLAN DETAIL
 
-GET http://localhost:8000/api/testplans/2/
+GET http://localhost:8000/api/testplans/1/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNDA3MDczLCJpYXQiOjE3MzM0MDM0NzMsImp0aSI6IjQyNDFkOTA0ODUwZjRkOTZhNjY5MjI0MjY0OWJlZTFiIiwidXNlcl9pZCI6MX0.FTh_AGxzvDXlISWIcBys_AGDawTXv1B9ENT7nwl6WDQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODAxNDkxLCJpYXQiOjE3Mzk3OTc4OTEsImp0aSI6ImNlYmQ0MzA1YzY1YjQ4OWVhY2JmMDgxMDVmNzk5Zjk3IiwidXNlcl9pZCI6MX0.ONmFN7XeOizW64OVXPhlodUTjYb2dX8Ib-kJsxrb0-M
 
 ### UPDATE TESTPLAN DETAIL
 

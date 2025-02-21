@@ -24,6 +24,7 @@ class Project(models.Model):
 
 
 class TestPlan(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     objective = models.TextField()
     scope_in = models.TextField()
@@ -60,11 +61,13 @@ class TestPlan(models.Model):
 
 
 class TestCase(models.Model):
+
     class StatusChoices(models.TextChoices):
         PASS = "Pass"
         FAIL = "Fail"
         PENDING = "Pending"
 
+    name = models.CharField(max_length=255, null=True, blank=True)
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name="test_cases"
     )
@@ -112,6 +115,7 @@ class TestCoverage(models.Model):
         COVERED = "Covered"
         NOT_COVERED = "Not Covered"
 
+    name = models.CharField(max_length=255, null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     feature_id = models.CharField(max_length=20, unique=True)
     feature_description = models.TextField()
@@ -163,6 +167,7 @@ class DefectReport(models.Model):
         HIGH = "High"
         CRITICAL = "Critical"
 
+    title = models.CharField(max_length=255, null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     defect_id = models.CharField(max_length=30, unique=True)
     summary = models.TextField()
@@ -219,6 +224,7 @@ class DefectReport(models.Model):
 
 
 class TestReport(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name="test_reports"
     )
